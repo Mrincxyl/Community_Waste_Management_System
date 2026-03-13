@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}Report Waste{% endblock title %}
+
+{% block content %}
+
+<section class="min-h-screen bg-gradient-to-br from-green-50 to-gray-100 py-16">
+
+<div class="max-w-3xl mx-auto bg-white shadow-2xl rounded-2xl p-10">
+
+<!-- Title -->
+
+<div class="text-center mb-10">
+<h1 class="text-3xl font-bold text-gray-800">
+Report Waste Issue
+</h1>
+
+<p class="text-gray-500 mt-2">
+Help keep the community clean by reporting waste problems.
+</p>
+</div>
+
+<form method="POST" enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<!-- Image Upload -->
+
+<div class="mb-6">
+
+<label class="block text-gray-700 font-medium mb-2">
+Upload Waste Image
+</label>
+
+<div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-green-500 transition">
+
+<p class="text-gray-500 text-sm mb-3">
+Drag & drop image or click to upload
+</p>
+
+<input 
+type="file"
+name="image"
+id="imageUpload"
+class="mx-auto block">
+
+</div>
+
+<img id="preview" class="mt-4 rounded-lg hidden"/>
+
+</div>
+
+<!-- Waste Type -->
+
+<div class="mb-6">
+
+<label class="block text-gray-700 font-medium mb-2">
+Waste Type
+</label>
+
+<div class="flex items-center border rounded-lg px-3">
+
+<span class="mr-2">♻️</span>
+
+<select
+name="waste_type"
+class="w-full py-2 outline-none">
+
+<option>Plastic Waste</option>
+<option>Food Waste</option>
+<option>Construction Waste</option>
+<option>Electronic Waste</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+</div>
+
+<!-- Description -->
+
+<div class="mb-6">
+
+<label class="block text-gray-700 font-medium mb-2">
+Description
+</label>
+
+<textarea
+name="description"
+rows="4"
+placeholder="Describe the waste issue..."
+class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-green-400 outline-none">
+</textarea>
+
+</div>
+
+<!-- Location -->
+
+<div class="mb-6">
+
+<label class="block text-gray-700 font-medium mb-2">
+Location
+</label>
+
+<div class="flex items-center gap-4">
+
+<button
+type="button"
+onclick="getLocation()"
+class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+
+📍 Detect My Location
+
+</button>
+
+<span id="locationStatus" class="text-sm text-gray-500">
+Location not detected
+</span>
+
+</div>
+
+</div>
+
+<!-- Hidden Location Inputs -->
+
+<input type="hidden" name="latitude" id="lat">
+<input type="hidden" name="longitude" id="lon">
+
+<!-- Submit Button -->
+
+<button
+type="submit"
+class="w-full bg-green-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition shadow-md">
+
+Submit Waste Report
+
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+<script>
+
+/* Image Preview */
+
+document.getElementById("imageUpload").addEventListener("change", function(event){
+
+const file = event.target.files[0];
+const preview = document.getElementById("preview");
+
+if(file){
+
+preview.src = URL.createObjectURL(file);
+preview.classList.remove("hidden");
+preview.classList.add("w-full");
+
+}
+
+});
+
+
+/* Get Location */
+
+function getLocation(){
+
+if(navigator.geolocation){
+
+navigator.geolocation.getCurrentPosition(function(position){
+
+document.getElementById("lat").value = position.coords.latitude;
+document.getElementById("lon").value = position.coords.longitude;
+
+document.getElementById("locationStatus").innerText =
+"Location captured successfully ✔";
+
+});
+
+}
+
+}
+
+</script>
+
+{% endblock content %}

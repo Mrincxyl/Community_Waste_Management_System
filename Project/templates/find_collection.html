@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Find Waste Collection
+{% endblock title %}
+
+{% block content %}
+
+<!-- Page Header -->
+
+<section class="py-10 bg-green-50">
+
+<div class="max-w-7xl mx-auto px-6 text-center">
+
+<h1 class="text-3xl font-bold mb-3">
+Find Waste Collection Points
+</h1>
+
+<p class="text-gray-600">
+Locate nearby waste collection bins and centers in your area.
+</p>
+
+</div>
+
+</section>
+
+<!-- Location Controls -->
+
+<div class="max-w-6xl mx-auto px-6 py-6 flex gap-4 justify-center">
+
+<button onclick="getLocation()"
+class="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700">
+📍 Detect My Location </button>
+
+</div>
+
+<!-- Map Section -->
+
+<div class="max-w-6xl mx-auto px-6 pb-16">
+
+<div id="map"
+class="w-full h-[500px] rounded-xl shadow-lg border">
+</div>
+
+</div>
+
+<!-- Nearby Collection Points -->
+
+<section class="pb-20 bg-gray-100">
+
+<div class="max-w-6xl mx-auto px-6">
+
+<h2 class="text-2xl font-semibold mb-6">
+Nearby Collection Points
+</h2>
+
+<div class="grid md:grid-cols-3 gap-6">
+
+<div class="bg-white p-5 rounded-xl shadow">
+<h3 class="font-semibold">📍 Park Street Bin</h3>
+<p class="text-sm text-gray-600 mt-2">Distance: 350 meters</p>
+<p class="text-sm text-gray-600">Open: 6AM – 9PM</p>
+</div>
+
+<div class="bg-white p-5 rounded-xl shadow">
+<h3 class="font-semibold">📍 Salt Lake Bin</h3>
+<p class="text-sm text-gray-600 mt-2">Distance: 700 meters</p>
+<p class="text-sm text-gray-600">Open: 24 Hours</p>
+</div>
+
+<div class="bg-white p-5 rounded-xl shadow">
+<h3 class="font-semibold">📍 New Town Collection</h3>
+<p class="text-sm text-gray-600 mt-2">Distance: 1.2 km</p>
+<p class="text-sm text-gray-600">Open: 7AM – 8PM</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Leaflet Map Script -->
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+let map = L.map('map').setView([22.5726, 88.3639], 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'OpenStreetMap'
+}).addTo(map);
+
+
+// Sample Waste Collection Points
+
+L.marker([22.5726, 88.3639]).addTo(map)
+    .bindPopup("Park Street Waste Bin");
+
+L.marker([22.5790, 88.4310]).addTo(map)
+    .bindPopup("Salt Lake Community Bin");
+
+L.marker([22.6010, 88.4700]).addTo(map)
+    .bindPopup("New Town Collection Center");
+
+
+// Detect User Location
+
+function getLocation(){
+
+if(navigator.geolocation){
+
+navigator.geolocation.getCurrentPosition(function(position){
+
+let lat = position.coords.latitude;
+let lon = position.coords.longitude;
+
+map.setView([lat, lon], 15);
+
+L.marker([lat, lon])
+.addTo(map)
+.bindPopup("You are here")
+.openPopup();
+
+});
+
+}
+
+}
+
+</script>
+
+{% endblock content %}
