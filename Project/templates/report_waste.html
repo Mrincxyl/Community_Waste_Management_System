@@ -4,49 +4,43 @@
 
 {% block content %}
 
-<section class="min-h-screen bg-gradient-to-br from-green-50 to-gray-100 py-16">
+<section class="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 py-16">
 
 <div class="max-w-3xl mx-auto bg-white shadow-2xl rounded-2xl p-10">
 
-<!-- Title -->
+<!-- Heading -->
 
 <div class="text-center mb-10">
+
 <h1 class="text-3xl font-bold text-gray-800">
 Report Waste Issue
 </h1>
 
 <p class="text-gray-500 mt-2">
-Help keep the community clean by reporting waste problems.
+Upload an image and mark the exact waste location on the map.
 </p>
+
 </div>
 
 <form method="POST" enctype="multipart/form-data">
 
 {% csrf_token %}
 
-<!-- Image Upload -->
+<!-- Upload Image -->
 
-<div class="mb-6">
+<div class="mb-8">
 
-<label class="block text-gray-700 font-medium mb-2">
+<label class="block text-gray-700 font-semibold mb-2">
 Upload Waste Image
 </label>
-
-<div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-green-500 transition">
-
-<p class="text-gray-500 text-sm mb-3">
-Drag & drop image or click to upload
-</p>
 
 <input 
 type="file"
 name="image"
 id="imageUpload"
-class="mx-auto block">
+class="w-full border rounded-lg p-2">
 
-</div>
-
-<img id="preview" class="mt-4 rounded-lg hidden"/>
+<img id="preview" class="mt-4 hidden rounded-lg shadow-md"/>
 
 </div>
 
@@ -54,17 +48,13 @@ class="mx-auto block">
 
 <div class="mb-6">
 
-<label class="block text-gray-700 font-medium mb-2">
+<label class="block text-gray-700 font-semibold mb-2">
 Waste Type
 </label>
 
-<div class="flex items-center border rounded-lg px-3">
-
-<span class="mr-2">♻️</span>
-
 <select
 name="waste_type"
-class="w-full py-2 outline-none">
+class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-green-400 outline-none">
 
 <option>Plastic Waste</option>
 <option>Food Waste</option>
@@ -76,13 +66,11 @@ class="w-full py-2 outline-none">
 
 </div>
 
-</div>
-
 <!-- Description -->
 
-<div class="mb-6">
+<div class="mb-8">
 
-<label class="block text-gray-700 font-medium mb-2">
+<label class="block text-gray-700 font-semibold mb-2">
 Description
 </label>
 
@@ -95,43 +83,46 @@ class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-green-400 outline-no
 
 </div>
 
-<!-- Location -->
+<!-- Location Section -->
 
 <div class="mb-6">
 
-<label class="block text-gray-700 font-medium mb-2">
+<label class="block text-gray-700 font-semibold mb-2">
 Location
 </label>
-
-<div class="flex items-center gap-4">
 
 <button
 type="button"
 onclick="getLocation()"
-class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+class="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 transition">
 
 📍 Detect My Location
 
 </button>
 
-<span id="locationStatus" class="text-sm text-gray-500">
+<span id="locationStatus"
+class="ml-3 text-sm text-gray-500">
+
 Location not detected
+
 </span>
 
 </div>
 
-</div>
+<!-- Map -->
 
-<!-- Hidden Location Inputs -->
+<div id="map" class="w-full h-80 rounded-xl border mb-8"></div>
+
+<!-- Hidden Coordinates -->
 
 <input type="hidden" name="latitude" id="lat">
 <input type="hidden" name="longitude" id="lon">
 
-<!-- Submit Button -->
+<!-- Submit -->
 
 <button
 type="submit"
-class="w-full bg-green-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition shadow-md">
+class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 rounded-lg text-lg font-semibold hover:scale-[1.02] transition">
 
 Submit Waste Report
 
@@ -143,9 +134,17 @@ Submit Waste Report
 
 </section>
 
+<!-- Leaflet Map Library -->
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 <script>
 
-/* Image Preview */
+/* -------------------------
+IMAGE PREVIEW
+------------------------- */
 
 document.getElementById("imageUpload").addEventListener("change", function(event){
 
@@ -163,25 +162,105 @@ preview.classList.add("w-full");
 });
 
 
-/* Get Location */
+
+/* -------------------------
+MAP INITIALIZATION
+------------------------- */
+
+let map = L.map('map').setView([22.5726, 88.3639], 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+attribution: 'OpenStreetMap'
+
+}).addTo(map);
+
+let marker;
+
+
+
+/* -------------------------
+DETECT USER LOCATION
+------------------------- */
 
 function getLocation(){
+
+const status = document.getElementById("locationStatus");
+
+status.innerText = "Detecting location...";
 
 if(navigator.geolocation){
 
 navigator.geolocation.getCurrentPosition(function(position){
 
-document.getElementById("lat").value = position.coords.latitude;
-document.getElementById("lon").value = position.coords.longitude;
+let lat = position.coords.latitude;
+let lon = position.coords.longitude;
 
-document.getElementById("locationStatus").innerText =
-"Location captured successfully ✔";
+map.setView([lat, lon], 16);
+
+
+/* Remove previous marker */
+
+if(marker){
+map.removeLayer(marker);
+}
+
+
+/* Create draggable marker */
+
+marker = L.marker([lat, lon], {draggable:true})
+.addTo(map)
+.bindPopup("Drag this pin to the waste location")
+.openPopup();
+
+
+/* Save coordinates */
+
+document.getElementById("lat").value = lat;
+document.getElementById("lon").value = lon;
+
+
+/* Update when marker dragged */
+
+marker.on("dragend", function(){
+
+let position = marker.getLatLng();
+
+document.getElementById("lat").value = position.lat;
+document.getElementById("lon").value = position.lng;
+
+status.innerText = "Location updated ✔";
+
+});
+
+
+status.innerText = "Location detected. Drag the pin if needed.";
 
 });
 
 }
 
 }
+
+
+
+/* -------------------------
+CLICK MAP TO MOVE MARKER
+------------------------- */
+
+map.on("click", function(e){
+
+if(marker){
+
+marker.setLatLng(e.latlng);
+
+document.getElementById("lat").value = e.latlng.lat;
+document.getElementById("lon").value = e.latlng.lng;
+
+}
+
+});
+
 
 </script>
 
