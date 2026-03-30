@@ -1,0 +1,45 @@
+{% if messages %}
+<div class="fixed top-5 right-5 space-y-3 z-50">
+    {% for message in messages %}
+
+    <div class="
+        flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg
+        {% if message.tags == 'success' %} bg-green-500 text-white {% endif %}
+        {% if message.tags == 'error' %} bg-red-500 text-white {% endif %}
+        {% if message.tags == 'warning' %} bg-yellow-400 text-black {% endif %}
+        {% if message.tags == 'info' %} bg-blue-500 text-white {% endif %}
+    ">
+        
+        <!-- Icon -->
+        <span class="text-lg">
+            {% if message.tags == 'success' %} ✅ {% endif %}
+            {% if message.tags == 'error' %} ❌ {% endif %}
+            {% if message.tags == 'warning' %} ⚠️ {% endif %}
+            {% if message.tags == 'info' %} ℹ️ {% endif %}
+        </span>
+
+        <!-- Message Text -->
+        <span class="font-medium">{{ message }}</span>
+
+        <!-- Close Button -->
+        <button onclick="this.parentElement.remove()" 
+                class="ml-auto font-bold hover:scale-110 transition">
+            ✖
+        </button>
+
+    </div>
+
+    {% endfor %}
+</div>
+
+<!-- Auto dismiss -->
+<script>
+    setTimeout(() => {
+        document.querySelectorAll('.fixed > div').forEach(el => {
+            el.style.transition = "opacity 0.5s ease";
+            el.style.opacity = "0";
+            setTimeout(() => el.remove(), 500);
+        });
+    }, 3000);
+</script>
+{% endif %}

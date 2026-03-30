@@ -1,21 +1,33 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+
+
 
 # Create your views here.
 
 def Login(request):
     
     if request.method == "POST":
-        useremail = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         
-        if User.objects.filter(email=useremail).exists():
-            messages.success(request,"You Logging Successfully")
-            return render(request,'home.html')
+        if not username or not password:
+            messages.error(request, "All Fields are required.")
+            return redirect('login')
+        
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, "Logged in successfully")
+            return redirect('home')
         else:
-            messages.error(request,"Please Create A Account.")
-            return render(request,'register.html')    
-    return render(request,"login.html") 
+            messages.error(request, "Invalid username or password")
+            return redirect('login')
+            
+    return render(request, "login.html")
 
 
 def Register(request):
@@ -25,6 +37,15 @@ def Register(request):
         useremail = request.POST.get('email')
         number = request.POST.get('phone')
         password = request.POST.get('password') 
+        confirm_password = request.POST.get('confirm_password')
+        
+        if not username or not useremail or not number or not password or not confirm_password:
+            messages.error(request,"All Fields are required.")
+            return redirect('register')
+        
+        if password != confirm_password:
+            messages.error(request,"Password does not Mathced!")
+            return redirect('register')
         
         isExists= User.objects.filter(email=useremail).exists()
         if isExists:
