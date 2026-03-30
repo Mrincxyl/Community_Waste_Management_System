@@ -60,3 +60,8 @@ def Register(request):
         
         
     return render(request,"register.html")
+
+def Logout(request):
+    logout(request)
+    messages.success(request,"Logged out successfully")
+    return redirect('home')
