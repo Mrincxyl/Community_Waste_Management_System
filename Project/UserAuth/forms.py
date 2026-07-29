@@ -10,6 +10,11 @@ class MunicipalityForm(forms.ModelForm):
             "designation",
             "official_email",
             "phone",
+            
+            "state",
+            "district",
+            "city",
+        
             "address",
             "verification_document",
         ]
@@ -33,6 +38,22 @@ class MunicipalityForm(forms.ModelForm):
             "phone": forms.TextInput(attrs={
                 "class": "w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-green-400 outline-none transition",
                 "placeholder": "Enter official phone number"
+            }),
+            
+            
+           "state": forms.TextInput(attrs={
+                "class": "w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-green-400 outline-none transition",
+                "placeholder": "Enter State"
+            }),
+
+            "district": forms.TextInput(attrs={
+                "class": "w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-green-400 outline-none transition",
+                "placeholder": "Enter District"
+            }),
+
+            "city": forms.TextInput(attrs={
+                "class": "w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-400 focus:border-green-400 outline-none transition",
+                "placeholder": "Enter Municipality / City"
             }),
 
             "address": forms.Textarea(attrs={

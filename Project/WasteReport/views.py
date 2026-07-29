@@ -7,6 +7,8 @@ from django.conf import settings
 
 from .email_utils import send_status_update_email, send_submit_report_email
 
+from UserAuth.models import Municipality
+
 def FindCollection(request):
     return render(request,"find_collection.html")
 
@@ -17,6 +19,16 @@ def ReportWaste(request):
         if form.is_valid():
             waste_report = form.save(commit=False)
             waste_report.user = request.user
+            
+            municipality = Municipality.objects.filter(
+                state__iexact=waste_report.state,
+                district__iexact=waste_report.district,
+                city__iexact=waste_report.city,
+                status="approved"
+            ).first()
+            
+            if municipality:
+                waste_report.assigned_municipality = municipality
             waste_report.save()
             
             try:
@@ -56,11 +68,12 @@ def my_reports(request):
 @login_required(login_url='login')
 def municipality_dashboard(request):
     
+    
     if request.user.role != 'municipality':
         messages.error(request, "You are not allowed to access this page.")
         return redirect("home")
     
-    reports = WasteReport.objects.all().order_by("-created_at")
+    reports = WasteReport.objects.filter(assigned_municipality__user = request.user)
     pending = reports.filter(status="pending").count()
     in_progress = reports.filter(status="in_progress").count()
     resolved = reports.filter(status="resolved").count()
@@ -112,6 +125,72 @@ def update_report_status(request,id):
     return render(request,"update_report.html",{"form":form,"report":report} ) 
 
 
+@login_required(login_url='login')
+def notification_list(request):
+    
+    notifications = Notification.objects.filter(user = request.user)
+    
+    return render(request,"notifications.html",{"notifications":notifications})
+
+@login_required(login_url="login")
+def mark_notification_read(request,id):
+    
+    notification = get_object_or_404(Notification,id=id,user=request.user)
+    
+    notification.is_read = True
+    notification.save()
+    
+    return redirect("notification_list")
 
 
+@login_required(login_url="login")
+def mark_all_notifications_read(request):
+    
+    notifications = Notification.objects.filter(user=request.user,is_read=False)
+    
+    notifications.update(is_read=True)
+    
+    return redirect("notification_list")
    
+   
+   
+@login_required(login_url="login")
+def open_notification(request, id):
+
+    notification = get_object_or_404(
+        Notification,
+        id=id,
+        user=request.user
+    )
+
+    if not notification.is_read:
+        notification.is_read = True
+        notification.save()
+
+    return redirect("my_reports")
+
+@login_required(login_url="login")
+def delete_notification(request, id):
+
+    notification = get_object_or_404(
+        Notification,
+        id=id,
+        user=request.user
+    )
+
+    notification.delete()
+
+    messages.success(request, "Notification deleted successfully.")
+
+    return redirect("notification_list")
+
+@login_required(login_url="login")
+def clear_notifications(request):
+
+    Notification.objects.filter(
+        user=request.user
+    ).delete()
+
+    messages.success(request, "All notifications cleared.")
+
+    return redirect("notification_list")

@@ -41,6 +41,21 @@ class WasteReport(models.Model):
     latitude = models.DecimalField(max_digits=10, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(max_digits=10, decimal_places=6, blank=True, null=True)
 
+    # Auto-filled from GPS
+    state = models.CharField(max_length=100, blank=True)
+    district = models.CharField(max_length=100, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+
+    full_address = models.TextField(blank=True,null=True)
+
+    assigned_municipality = models.ForeignKey(
+        "UserAuth.Municipality",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="assigned_reports"
+    )
+    
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -76,7 +91,7 @@ class Notification(models.Model):
         ordering = ['-created_at']
         
     def __str__(self):
-        return None      
+        return self.title    
     
     
     

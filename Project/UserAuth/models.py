@@ -43,6 +43,25 @@ class Municipality(models.Model):
     
     address = models.TextField()
     
+    state = models.CharField(max_length=100, blank=True, null=True)
+    district = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
+    
+    latitude = models.DecimalField(
+        max_digits=10,
+        decimal_places=6,
+        blank=True,
+        null = True
+    )
+    
+    longitude = models.DecimalField(
+        max_digits=10,
+        decimal_places=6,
+        blank=True,
+        null=True
+    )
+
+    
     verification_document = models.FileField(upload_to='municipality_docs/')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     
