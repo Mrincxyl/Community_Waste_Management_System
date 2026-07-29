@@ -1,6 +1,6 @@
 {% load static %}
 
-<nav class="absolute top-0 left-0 w-full z-50 bg-black/70 backdrop-blur-lg border-b border-white/10 overflow-hidden">
+<nav class="absolute top-0 left-0 w-full z-50 bg-black/70 backdrop-blur-lg border-b border-white/10">
   <div class="w-full max-w-7xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between gap-4">
 
     <!-- LOGO -->
@@ -15,80 +15,128 @@
     </a>
 
     <!-- SEARCH -->
-    <div class="hidden md:flex flex-1 max-w-[300px]">
+    <div class="hidden xl:flex flex-1 max-w-[260px]">
       {% include "searchbox.html" %}
     </div>
 
     <!-- DESKTOP MENU -->
-    <div class="hidden lg:flex items-center gap-5 text-white text-sm font-semibold whitespace-nowrap">
+    <div class="hidden xl:flex items-center gap-3 text-white text-sm font-semibold whitespace-nowrap">
 
       <a href="{% url 'home' %}" class="hover:text-green-300 transition">Home</a>
 
       <a href="{% url 'find_collection' %}" class="hover:text-green-300 transition">
         Find Collection
       </a>
-      
-     {% if user.is_authenticated %}
 
-  <a href="{% url 'report_waste' %}" class="hover:text-green-300 transition">
-    Report Waste
-  </a>
+      {% if user.is_authenticated %}
 
-  <a href="{% url 'my_reports' %}" class="hover:text-green-300 transition">
-    My Reports
-  </a>
+        <a href="{% url 'report_waste' %}" class="hover:text-green-300 transition">
+          Report Waste
+        </a>
 
-  {% if user.role == 'user' %}
-    <a href="{% url 'apply_municipality' %}"
-       class="hover:text-blue-300 transition">
-      Apply as Municipality
-    </a>
-  {% endif %}
+        <a href="{% url 'my_reports' %}" class="hover:text-green-300 transition">
+          My Reports
+        </a>
 
-  {% if user.role == 'municipality' %}
-    <a href="{% url 'municipality_dashboard' %}"
-       class="text-emerald-300 hover:text-emerald-200 transition">
-      Municipality Dashboard
-    </a>
-  {% endif %}
+        {% if user.role == 'user' %}
+          <a href="{% url 'apply_municipality' %}"
+             class="hover:text-blue-300 transition">
+            Apply as Municipality
+          </a>
+        {% endif %}
 
-  {% if user.is_superuser %}
-    <a href="/admin/" class="text-yellow-300 hover:text-yellow-200 transition">
-      Admin
-    </a>
-  {% endif %}
+        {% if user.role == 'municipality' %}
+          <a href="{% url 'municipality_dashboard' %}"
+             class="text-emerald-300 hover:text-emerald-200 transition">
+            Municipality Dashboard
+          </a>
+        {% endif %}
 
-  <a href="{% url 'profile' %}">
-    {% if user.profile_picture %}
-      <img src="{{ user.profile_picture.url }}"
-        class="w-10 h-10 rounded-full object-cover border-2 border-indigo-500">
-    {% else %}
-        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-500 text-white font-bold">
-            {{ user.full_name|default:user.username|first|upper }}
+        {% if user.is_superuser %}
+          <a href="/admin/" class="text-yellow-300 hover:text-yellow-200 transition">
+            Admin
+          </a>
+        {% endif %}
+
+            <div class="relative">
+
+        <button
+            id="notificationBtn"
+            class="relative p-2 rounded-lg hover:bg-white/10 transition duration-200">
+
+            <!-- Bell Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 17h5l-1.4-1.4A2 2 0 0118 14.2V11a6 6 0 10-12 0v3.2a2 2 0 01-.6 1.4L4 17h5m6 0a3 3 0 11-6 0m6 0H9"/>
+            </svg>
+
+            {% if unread_notification_count > 0 %}
+
+            <span class="absolute -top-1 -right-1
+                          bg-red-600
+                          text-white
+                          text-xs
+                          font-bold
+                          rounded-full
+                          min-w-[20px]
+                          h-5
+                          flex
+                          items-center
+                          justify-center">
+
+                {% if unread_notification_count > 99 %}
+                    99+
+                {% else %}
+                    {{ unread_notification_count }}
+                {% endif %}
+
+            </span>
+
+            {% endif %}
+
+        </button>
+
+        {% include "notification_dropdown.html" %}
+
         </div>
-    {% endif %}
-  </a>
 
+        <a href="{% url 'profile' %}" class="shrink-0">
+          {% if user.profile_picture %}
+            <img src="{{ user.profile_picture.url }}"
+              class="w-10 h-10 rounded-full object-cover border-2 border-indigo-500">
+          {% else %}
+              <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-500 text-white font-bold">
+                  {{ user.full_name|default:user.username|first|upper }}
+              </div>
+          {% endif %}
+        </a>
 
-  <a href="{% url 'logout' %}"
-     class="px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-md hover:scale-105 transition">
-    Logout
-  </a>
+        <a href="{% url 'logout' %}"
+           class="px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-md hover:scale-105 transition shrink-0">
+          Logout
+        </a>
 
-{% else %}
+      {% else %}
 
-  <a href="{% url 'login' %}" class="hover:text-green-300 transition">Login</a>
+        <a href="{% url 'login' %}" class="hover:text-green-300 transition">Login</a>
 
-  <a href="{% url 'register' %}"
-     class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white shadow-md transition">
-    Sign Up
-  </a>
+        <a href="{% url 'register' %}"
+           class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white shadow-md transition">
+          Sign Up
+        </a>
 
-{% endif %}
+      {% endif %}
     </div>
 
     <!-- MOBILE BUTTON -->
-    <button id="menuBtn" class="lg:hidden text-white text-2xl">
+    <button id="menuBtn" class="xl:hidden text-white text-2xl">
       ☰
     </button>
 
@@ -96,9 +144,9 @@
 
   <!-- MOBILE MENU -->
   <div id="mobileMenu"
-       class="hidden lg:hidden bg-black/95 border-t border-white/10 px-5 py-4 space-y-4 text-white text-sm font-medium">
+       class="hidden xl:hidden bg-black/95 border-t border-white/10 px-5 py-4 space-y-4 text-white text-sm font-medium">
 
-    <div class="md:hidden">
+    <div>
       {% include "searchbox.html" %}
     </div>
 
@@ -108,11 +156,44 @@
     {% if user.is_authenticated %}
 
       <a href="{% url 'report_waste' %}" class="block hover:text-green-300">Report Waste</a>
-      <a href="#" class="block hover:text-green-300">My Reports</a>
+      <a href="{% url 'my_reports' %}" class="block hover:text-green-300">My Reports</a>
+
+      {% if user.role == 'user' %}
+        <a href="{% url 'apply_municipality' %}" class="block hover:text-blue-300">
+          Apply as Municipality
+        </a>
+      {% endif %}
+
+      {% if user.role == 'municipality' %}
+        <a href="{% url 'municipality_dashboard' %}" class="block text-emerald-300 hover:text-emerald-200">
+          Municipality Dashboard
+        </a>
+      {% endif %}
 
       {% if user.is_superuser %}
         <a href="/admin/" class="block text-yellow-300">Admin Panel</a>
       {% endif %}
+
+      <a href="{% url 'notification_list' %}" class="flex items-center gap-2 hover:text-green-300">
+        Notifications
+        {% if unread_notification_count > 0 %}
+          <span class="bg-red-600 text-white text-xs font-bold rounded-full min-w-[20px] h-5 flex items-center justify-center">
+            {{ unread_notification_count }}
+          </span>
+        {% endif %}
+      </a>
+
+      <a href="{% url 'profile' %}" class="flex items-center gap-2 hover:text-green-300">
+        {% if user.profile_picture %}
+          <img src="{{ user.profile_picture.url }}"
+               class="w-8 h-8 rounded-full object-cover border-2 border-indigo-500">
+        {% else %}
+          <div class="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-500 text-white font-bold text-xs">
+            {{ user.full_name|default:user.username|first|upper }}
+          </div>
+        {% endif %}
+        My Profile
+      </a>
 
       <a href="{% url 'logout' %}"
          class="inline-block px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-pink-500 text-white">
@@ -133,12 +214,49 @@
 </nav>
 
 <script>
-  const menuBtn = document.getElementById("menuBtn");
-  const mobileMenu = document.getElementById("mobileMenu");
 
-  if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
+const menuBtn = document.getElementById("menuBtn");
+const mobileMenu = document.getElementById("mobileMenu");
+
+if(menuBtn && mobileMenu){
+
+    menuBtn.addEventListener("click",()=>{
+
+        mobileMenu.classList.toggle("hidden");
+
     });
-  }
+
+}
+
+
+
+// Notification Dropdown
+
+const notificationBtn = document.getElementById("notificationBtn");
+const notificationDropdown = document.getElementById("notificationDropdown");
+
+if(notificationBtn){
+
+    notificationBtn.addEventListener("click",(e)=>{
+
+        e.stopPropagation();
+
+        notificationDropdown.classList.toggle("hidden");
+
+    });
+
+    document.addEventListener("click",()=>{
+
+        notificationDropdown.classList.add("hidden");
+
+    });
+
+    notificationDropdown.addEventListener("click",(e)=>{
+
+        e.stopPropagation();
+
+    });
+
+}
+
 </script>
