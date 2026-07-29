@@ -1,0 +1,101 @@
+<div
+id="notificationDropdown"
+class="hidden absolute right-0 mt-3 w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50">
+
+    <!-- Header -->
+
+    <div class="flex items-center justify-between px-5 py-4 border-b">
+
+        <h2 class="font-bold text-lg">
+            Notifications
+        </h2>
+
+        <a
+        href="{% url 'notification_list' %}"
+        class="text-indigo-600 text-sm hover:underline">
+
+            View All
+
+        </a>
+
+    </div>
+
+
+
+    {% if navbar_notifications %}
+
+    <div class="max-h-96 overflow-y-auto">
+
+        {% for notification in navbar_notifications %}
+
+        <a
+        href="{% url 'open_notification' notification.id %}"
+        class="block px-5 py-4 hover:bg-gray-50 border-b">
+
+            <div class="flex gap-3">
+
+                <div>
+
+                    {% if notification.is_read %}
+
+                        <div
+                        class="w-3 h-3 rounded-full bg-gray-300 mt-2">
+                        </div>
+
+                    {% else %}
+
+                        <div
+                        class="w-3 h-3 rounded-full bg-red-500 mt-2">
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="flex-1">
+
+                    <h3 class="font-semibold text-gray-800">
+
+                        {{ notification.title }}
+
+                    </h3>
+
+                    <p class="text-gray-600 text-sm mt-1">
+
+                        {{ notification.message|truncatechars:70 }}
+
+                    </p>
+
+                    <span class="text-xs text-gray-400">
+
+                        {{ notification.created_at|timesince }} ago
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="py-10 text-center text-gray-500">
+
+        🔔
+
+        <p class="mt-3">
+
+            No Notifications
+
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>

@@ -9,6 +9,7 @@ from .models import customUser
 admin.site.register(customUser) 
 admin.site.register(OtpModel)
 
+
 @admin.register(Municipality)
 class MunicipalityAdmin(admin.ModelAdmin):
     list_display = ("user", "organization_name", "status", "applied_at")
