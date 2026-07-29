@@ -1,0 +1,115 @@
+{% extends "emails/base_email.html" %}
+
+{% block title %}
+Waste Report Submitted Successfully
+{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-top:0;color:#1e293b;">
+    Hello {{ user.full_name }},
+</h2>
+
+<p style="font-size:16px;color:#555;line-height:1.8;">
+    Thank you for helping keep our community clean! 🎉
+</p>
+
+<p style="font-size:16px;color:#555;line-height:1.8;">
+    Your waste report has been submitted successfully and has been received by our municipality team.
+</p>
+
+<div style="
+    background:#ECFDF5;
+    border-left:5px solid #10B981;
+    border-radius:10px;
+    padding:20px;
+    margin:30px 0;
+">
+
+<h3 style="margin-top:0;color:#065F46;">
+✅ Report Details
+</h3>
+
+<table>
+
+<tr>
+    <td class="label">📝 Report Title</td>
+    <td>{{ report.title }}</td>
+</tr>
+
+<tr>
+    <td class="label">♻ Waste Type</td>
+    <td>{{ report.get_waste_type_display }}</td>
+</tr>
+
+<tr>
+    <td class="label">🚨 Priority</td>
+    <td>{{ report.get_urgency_level_display }}</td>
+</tr>
+
+<tr>
+    <td class="label">📍 Landmark</td>
+    <td>{{ report.landmark|default:"Not Provided" }}</td>
+</tr>
+
+<tr>
+    <td class="label">📌 Current Status</td>
+    <td>
+        <span class="status">
+            {{ report.get_status_display }}
+        </span>
+    </td>
+</tr>
+
+<tr>
+    <td class="label">📅 Submitted On</td>
+    <td>{{ report.created_at|date:"d M Y, h:i A" }}</td>
+</tr>
+
+</table>
+
+</div>
+
+<div style="
+background:#EFF6FF;
+border-left:5px solid #2563EB;
+padding:20px;
+border-radius:10px;
+margin:30px 0;
+">
+
+<h3 style="margin-top:0;">
+📋 What Happens Next?
+</h3>
+
+<ol style="line-height:2;color:#555;padding-left:20px;">
+
+<li>Your report will be reviewed by the municipality.</li>
+
+<li>The municipality will verify the reported location.</li>
+
+<li>The report status will be updated as work progresses.</li>
+
+<li>You will receive both an in-app notification and an email whenever the status changes.</li>
+
+</ol>
+
+</div>
+
+<p style="color:#555;line-height:1.8;">
+You can track the progress of your report anytime from your account.
+</p>
+
+<p style="margin-top:35px;">
+
+<a href="http://127.0.0.1:8000/my_reports/" class="button">
+View My Reports
+</a>
+
+</p>
+
+<p style="margin-top:40px;color:#555;">
+Thank you for contributing to a cleaner, healthier, and more sustainable community. 🌱
+</p>
+
+{% endblock %}

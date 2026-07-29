@@ -2,96 +2,160 @@
 {% load static %}
 
 {% block title %}
-Home - Community Waste Reporting System
+Home | Community Waste Reporting System
 {% endblock title %}
 
 {% block content %}
 
-<!-- HERO SECTION -->
+<!-- ================= HERO SECTION ================= -->
+<section class="relative min-h-[680px] flex items-center overflow-hidden">
 
-<section class="relative h-[560px] flex items-center justify-center text-center">
+    <!-- Background -->
+    <div class="absolute inset-0">
+        <img
+            src="{% static 'images/garbage.jpg' %}"
+            alt="Community Waste Management"
+            class="w-full h-full object-cover">
 
-<div class="absolute inset-0">
-    <img src="{% static 'images/garbage.jpg' %}" 
-         class="w-full h-full object-cover">
-    <div class="absolute inset-0 bg-black/60"></div>
-</div>
+        <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-black/30"></div>
+    </div>
 
-<div class="relative z-10 text-white max-w-3xl px-4">
-    <h1 class="text-5xl font-bold mb-6 leading-tight">
-        Keep Your Community <span class="text-green-400">Clean & Healthy</span>
-    </h1>
+    <!-- Hero Content -->
+    <div class="relative z-10 max-w-7xl mx-auto w-full px-6 pt-24">
 
+        <div class="max-w-3xl text-white">
 
-<p class="text-lg mb-8 text-gray-200">
-    Easily report waste problems in your area and track resolution in real time.
-    Together we can build a cleaner city.
-</p>
+            <!-- Badge -->
+            <span class="inline-flex items-center rounded-full bg-green-500/20 border border-green-400/30 px-4 py-2 text-sm font-semibold text-green-200 backdrop-blur">
+                ♻️ Smart Community Waste Reporting
+            </span>
 
-<div class="flex justify-center gap-4">
-    <a href="{% url 'report_waste'%}" class="bg-green-500 hover:bg-green-600 px-6 py-3 rounded-lg font-semibold shadow">
-        Report Waste
-    </a>
+            <!-- Animated Heading -->
+            <h1
+                id="hero-title"
+                class="mt-6 text-4xl md:text-6xl font-extrabold leading-tight tracking-tight min-h-[170px]">
+            </h1>
 
-    <a href="#" class="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-lg font-semibold shadow">
-        Track Report
-    </a>
-</div>
+            <!-- Subtitle -->
+            <p class="mt-6 text-lg md:text-xl text-gray-200 leading-relaxed max-w-2xl">
+                Report waste issues, share exact locations, and help local authorities
+                resolve problems faster through a transparent and efficient tracking
+                system.
+            </p>
 
+            <!-- Buttons -->
+            <div class="mt-10 flex flex-col sm:flex-row gap-4">
 
-</div>
+                <a href="{% url 'report_waste' %}"
+                    class="inline-flex items-center justify-center rounded-xl bg-green-500 px-7 py-3.5 font-semibold text-white shadow-lg transition hover:bg-green-600 hover:scale-105">
+                    Report Waste Issue
+                </a>
 
-</section>
+                <a href="#reports"
+                    class="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/10 px-7 py-3.5 font-semibold text-white backdrop-blur transition hover:bg-white/20">
+                    View Recent Reports
+                </a>
 
-{% include "reportcards.html" %}
+            </div>
 
-<!-- STATS SECTION -->
+        </div>
 
-<section class="py-16 bg-white">
-
-<div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8 text-center">
-
-<div>
-<h3 class="text-4xl font-bold text-green-600">120+</h3>
-<p class="text-gray-600 mt-2">Issues Reported</p>
-</div>
-
-<div>
-<h3 class="text-4xl font-bold text-blue-600">95+</h3>
-<p class="text-gray-600 mt-2">Issues Resolved</p>
-</div>
-
-<div>
-<h3 class="text-4xl font-bold text-purple-600">300+</h3>
-<p class="text-gray-600 mt-2">Community Members</p>
-</div>
-
-</div>
+    </div>
 
 </section>
 
+<!-- ================= REPORTS ================= -->
+<div id="reports"></div>
 
+{% include "sample_reports.html" %}
 
-<!-- CALL TO ACTION -->
+<!-- ================= TYPEWRITER SCRIPT ================= -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
-<section class="py-20 bg-green-600 text-white text-center">
+    const messages = [
+        "Keep Your Community Clean, Safe & Healthy",
+        "Smart Waste Management for a Greener Tomorrow",
+        "Together, We Reduce Waste and Build a Sustainable Future"
+    ];
 
-<div class="max-w-3xl mx-auto px-6">
+    const heroTitle = document.getElementById("hero-title");
 
-<h2 class="text-3xl font-bold mb-4">
-Help Make Your City Cleaner 🌍
-</h2>
+    let messageIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
 
-<p class="mb-6 text-green-100">
-Join the community effort to report waste problems and improve public hygiene.
-</p>
+    function animateText() {
 
-<a href="{% url 'report_waste' %}" class="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold shadow hover:bg-gray-200">
-Report an Issue
-</a>
+        const current = messages[messageIndex];
 
-</div>
+        if (!deleting) {
 
+            heroTitle.textContent = current.substring(0, charIndex + 1);
+            charIndex++;
+
+            if (charIndex === current.length) {
+
+                deleting = true;
+                setTimeout(animateText, 2000);
+
+            } else {
+
+                setTimeout(animateText, 70);
+
+            }
+
+        } else {
+
+            heroTitle.textContent = current.substring(0, charIndex - 1);
+            charIndex--;
+
+            if (charIndex === 0) {
+
+                deleting = false;
+                messageIndex = (messageIndex + 1) % messages.length;
+
+                setTimeout(animateText, 500);
+
+            } else {
+
+                setTimeout(animateText, 35);
+
+            }
+
+        }
+
+    }
+
+    animateText();
+
+});
+</script>
+
+<!-- ================= STATS ================= -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="grid md:grid-cols-3 gap-6">
+
+            <div class="rounded-3xl border border-gray-100 bg-green-50 p-8 text-center shadow-sm hover:shadow-md transition">
+                <h3 class="text-4xl font-extrabold text-green-600">{{ info.report }}</h3>
+                <p class="mt-2 text-gray-700 font-medium">Issues Reported</p>
+            </div>
+
+            <div class="rounded-3xl border border-gray-100 bg-blue-50 p-8 text-center shadow-sm hover:shadow-md transition">
+                <h3 class="text-4xl font-extrabold text-blue-600">{{ info.resolved }}</h3>
+                <p class="mt-2 text-gray-700 font-medium">Issues Resolved</p>
+            </div>
+
+            <div class="rounded-3xl border border-gray-100 bg-purple-50 p-8 text-center shadow-sm hover:shadow-md transition">
+                <h3 class="text-4xl font-extrabold text-purple-600">{{ info.total_users }}</h3>
+                <p class="mt-2 text-gray-700 font-medium">Community Members</p>
+            </div>
+
+        </div>
+
+    </div>
 </section>
 
 {% endblock content %}

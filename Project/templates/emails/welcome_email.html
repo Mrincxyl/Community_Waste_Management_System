@@ -1,0 +1,97 @@
+{% extends "emails/base_email.html" %}
+
+{% block title %}
+Welcome to Community Waste Reporting
+{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-top:0;color:#1e293b;">
+    Welcome, {{ user.full_name }}! 🎉
+</h2>
+
+<p style="font-size:16px;color:#555;line-height:1.8;">
+    Your account has been created successfully.
+</p>
+
+<p style="font-size:16px;color:#555;line-height:1.8;">
+    Thank you for joining the <strong>Community Waste Reporting & Tracking System</strong>.
+    Together, we can make our city cleaner and healthier.
+</p>
+
+<div style="
+    margin:35px 0;
+    background:#ECFDF5;
+    border-left:5px solid #10B981;
+    border-radius:10px;
+    padding:25px;
+">
+
+<h3 style="margin-top:0;color:#065F46;">
+🚀 You can now:
+</h3>
+
+<ul style="color:#555;line-height:2; padding-left:20px;">
+
+<li>📍 Report illegal waste dumping</li>
+
+<li>📸 Upload photos of waste</li>
+
+<li>🗺️ Pin the exact location on the map</li>
+
+<li>📬 Receive status updates from the municipality</li>
+
+<li>🔔 Get real-time notifications</li>
+
+<li>📊 Track all your submitted reports</li>
+
+</ul>
+
+</div>
+
+<div style="
+background:#EFF6FF;
+padding:20px;
+border-radius:10px;
+border-left:5px solid #2563EB;
+">
+
+<strong>Your Account Information</strong>
+
+<table style="margin-top:15px;">
+
+<tr>
+<td class="label">Full Name</td>
+<td>{{ user.full_name }}</td>
+</tr>
+
+<tr>
+<td class="label">Username</td>
+<td>{{ user.username }}</td>
+</tr>
+
+<tr>
+<td class="label">Email</td>
+<td>{{ user.email }}</td>
+</tr>
+
+</table>
+
+</div>
+
+<p style="margin-top:35px;">
+We're excited to have you as part of our community.
+Every report you submit helps create a cleaner and safer environment.
+</p>
+
+<p style="margin-top:35px;">
+<a href="http://127.0.0.1:8000/login/" class="button">
+Login to Your Account
+</a>
+</p>
+
+<p style="margin-top:35px;">
+Thank you for joining us! 🌱
+</p>
+
+{% endblock %}

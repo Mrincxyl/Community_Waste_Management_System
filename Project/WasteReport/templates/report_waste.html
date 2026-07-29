@@ -1,0 +1,372 @@
+{% extends "base.html" %}
+
+{% block title %}Report Waste | WasteTracker{% endblock title %}
+
+{% block content %}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+<section class="min-h-screen bg-slate-50 pt-28 pb-20 px-4">
+
+  <div class="max-w-7xl mx-auto">
+
+    <!-- PAGE HEADER -->
+    <div class="mb-10 text-center">
+      <span class="inline-flex items-center rounded-full bg-green-100 px-4 py-1.5 text-sm font-semibold text-green-700">
+        ♻️ WasteTracker Report Center
+      </span>
+
+      <h1 class="mt-4 text-4xl md:text-5xl font-extrabold text-slate-900">
+        Report a Waste Issue
+      </h1>
+
+      <p class="mt-4 max-w-2xl mx-auto text-slate-500">
+        Submit a clear photo, issue details, and exact location so the cleaning team can verify and respond quickly.
+      </p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="grid lg:grid-cols-12 gap-8">
+
+        <!-- LEFT FORM AREA -->
+        <div class="lg:col-span-8 space-y-6">
+
+          <!-- CARD 1 -->
+          <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 md:p-8">
+            <div class="flex items-start gap-4 mb-6">
+              <div class="h-10 w-10 rounded-2xl bg-green-600 text-white flex items-center justify-center font-bold">
+                1
+              </div>
+              <div>
+                <h2 class="text-xl font-bold text-slate-900">
+                  Waste Evidence
+                </h2>
+                <p class="text-sm text-slate-500">
+                  Upload a clear image with <b>jio tag</b> for verification.
+                </p>
+              </div>
+            </div>
+
+            <label for="imageUpload"
+                   class="group relative flex min-h-56 cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed border-green-300 bg-gradient-to-br from-green-50 to-emerald-50 hover:from-green-100 hover:to-emerald-100 transition overflow-hidden">
+
+              <div class="text-center p-8">
+                <div class="mx-auto h-16 w-16 rounded-2xl bg-white shadow flex items-center justify-center text-3xl">
+                  📸
+                </div>
+
+                <p class="mt-4 text-lg font-bold text-slate-800">
+                  Upload waste photo
+                </p>
+
+                <p class="mt-1 text-sm text-slate-500">
+                  JPG, JPEG or PNG
+                </p>
+              </div>
+
+              <input
+                type="file"
+                name="image"
+                id="imageUpload"
+                accept="image/*"
+                required
+                class="hidden">
+            </label>
+
+            <img
+              id="preview"
+              class="mt-5 hidden w-full max-h-80 object-cover rounded-3xl border border-slate-200 shadow">
+          </div>
+
+          <!-- CARD 2 -->
+          <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 md:p-8">
+            <div class="flex items-start gap-4 mb-6">
+              <div class="h-10 w-10 rounded-2xl bg-green-600 text-white flex items-center justify-center font-bold">
+                2
+              </div>
+              <div>
+                <h2 class="text-xl font-bold text-slate-900">
+                  Issue Details
+                </h2>
+                <p class="text-sm text-slate-500">
+                  Add category, priority, and short description.
+                </p>
+              </div>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-sm font-semibold text-slate-700 mb-2">
+                Report Title
+              </label>
+
+              <input
+                type="text"
+                name="title"
+                required
+                placeholder="Example: Garbage pile near main road"
+                class="w-full rounded-2xl border border-slate-300 px-4 py-3 text-slate-800 focus:border-green-500 focus:ring-4 focus:ring-green-100 outline-none">
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">
+                  Waste Type
+                </label>
+
+                <select name="waste_type" required
+                  class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-800 focus:border-green-500 focus:ring-4 focus:ring-green-100 outline-none">
+                  <option value="household">Household Waste</option>
+                  <option value="industrial">Industrial Waste</option>
+                  <option value="organic">Organic Waste</option>
+                  <option value="hazardous">Hazardous Waste</option>
+                  <option value="electronic">Electronic Waste</option>
+                  <option value="construction">Construction Waste</option>
+                  <option value="medical">Medical Waste</option>
+                  <option value="recyclable">Recyclable Waste</option>
+                  <option value="other">Other Waste</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">
+                  Urgency Level
+                </label>
+
+                <select name="urgency_level" required
+                  class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-800 focus:border-green-500 focus:ring-4 focus:ring-green-100 outline-none">
+                  <option value="low">Low Priority</option>
+                  <option value="medium">Medium Priority</option>
+                  <option value="high">High Priority</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mt-5">
+              <label class="block text-sm font-semibold text-slate-700 mb-2">
+                Description
+              </label>
+
+              <textarea
+                name="description"
+                rows="5"
+                required
+                placeholder="Example: Garbage pile near the main road, bad smell spreading in the area..."
+                class="w-full rounded-2xl border border-slate-300 px-4 py-3 text-slate-800 focus:border-green-500 focus:ring-4 focus:ring-green-100 outline-none"></textarea>
+            </div>
+
+            <div class="mt-5">
+              <label class="block text-sm font-semibold text-slate-700 mb-2">
+                Nearby Landmark / Address
+              </label>
+
+              <input
+                type="text"
+                name="landmark"
+                placeholder="Example: Near market gate, beside school..."
+                class="w-full rounded-2xl border border-slate-300 px-4 py-3 text-slate-800 focus:border-green-500 focus:ring-4 focus:ring-green-100 outline-none">
+            </div>
+          </div>
+
+          <!-- CARD 3 -->
+          <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-5">
+              <div class="flex items-start gap-4">
+                <div class="h-10 w-10 rounded-2xl bg-green-600 text-white flex items-center justify-center font-bold">
+                  3
+                </div>
+                <div>
+                  <h2 class="text-xl font-bold text-slate-900">
+                    Exact Location
+                  </h2>
+                  <p class="text-sm text-slate-500">
+                    Detect location or click on the map to place the marker.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onclick="getLocation()"
+                class="rounded-2xl bg-slate-900 px-5 py-3 text-white font-semibold shadow hover:bg-green-700 transition">
+                📍 Detect Location
+              </button>
+            </div>
+
+            <div class="mb-4 rounded-2xl bg-slate-100 px-4 py-3 text-sm text-slate-600">
+              <span id="locationStatus">Location not selected</span>
+            </div>
+
+            <div id="map"
+                 class="w-full h-[380px] rounded-3xl border border-slate-300 shadow-inner overflow-hidden">
+            </div>
+
+            <input type="hidden" name="latitude" id="lat" required>
+            <input type="hidden" name="longitude" id="lon" required>
+          </div>
+
+        </div>
+
+        <!-- RIGHT SUMMARY PANEL -->
+        <aside class="lg:col-span-4">
+          <div class="sticky top-28 space-y-6">
+
+            <div class="rounded-3xl bg-slate-900 text-white p-7 shadow-xl">
+              <h3 class="text-2xl font-bold">
+                Before You Submit
+              </h3>
+
+              <p class="mt-3 text-slate-300 text-sm leading-relaxed">
+                Make sure the image is clear with <b>jio tag</b>, the location marker is accurate, and the description explains the issue properly.
+              </p>
+
+              <div class="mt-6 space-y-4">
+                <div class="flex items-center gap-3">
+                  <span class="h-9 w-9 rounded-xl bg-white/10 flex items-center justify-center">✓</span>
+                  <p class="text-sm">Clear waste image uploaded</p>
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <span class="h-9 w-9 rounded-xl bg-white/10 flex items-center justify-center">✓</span>
+                  <p class="text-sm">Correct waste type selected</p>
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <span class="h-9 w-9 rounded-xl bg-white/10 flex items-center justify-center">✓</span>
+                  <p class="text-sm">Location pin placed correctly</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-3xl bg-white border border-slate-200 p-7 shadow-sm">
+              <h3 class="font-bold text-slate-900">
+                Report Status Flow
+              </h3>
+
+              <div class="mt-5 space-y-4">
+                <div class="flex gap-3">
+                  <span class="mt-1 h-3 w-3 rounded-full bg-yellow-400"></span>
+                  <div>
+                    <p class="font-semibold text-slate-800">Pending</p>
+                    <p class="text-sm text-slate-500">Report submitted for review.</p>
+                  </div>
+                </div>
+
+                <div class="flex gap-3">
+                  <span class="mt-1 h-3 w-3 rounded-full bg-blue-500"></span>
+                  <div>
+                    <p class="font-semibold text-slate-800">In Progress</p>
+                    <p class="text-sm text-slate-500">Cleaning team assigned.</p>
+                  </div>
+                </div>
+
+                <div class="flex gap-3">
+                  <span class="mt-1 h-3 w-3 rounded-full bg-green-500"></span>
+                  <div>
+                    <p class="font-semibold text-slate-800">Resolved</p>
+                    <p class="text-sm text-slate-500">Waste issue completed.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full rounded-3xl bg-gradient-to-r from-green-600 to-emerald-600 py-4 text-white text-lg font-bold shadow-xl hover:shadow-2xl hover:scale-[1.01] transition">
+              Submit Waste Report
+            </button>
+
+          </div>
+        </aside>
+
+      </div>
+    </form>
+  </div>
+
+</section>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+  const imageUpload = document.getElementById("imageUpload");
+  const preview = document.getElementById("preview");
+
+  imageUpload.addEventListener("change", function(event) {
+    const file = event.target.files[0];
+
+    if (file) {
+      preview.src = URL.createObjectURL(file);
+      preview.classList.remove("hidden");
+    }
+  });
+
+  let map = L.map("map").setView([22.5726, 88.3639], 13);
+
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+    attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
+    subdomains: "abcd",
+    maxZoom: 20
+  }).addTo(map);
+
+  let marker;
+
+  function updateCoordinates(lat, lon) {
+    document.getElementById("lat").value = Number(lat).toFixed(6);
+    document.getElementById("lon").value = Number(lon).toFixed(6);
+
+    console.log(document.getElementById("lat").value);
+    console.log(document.getElementById("lon").value);
+}
+
+  function placeMarker(lat, lon) {
+    if (marker) {
+      marker.setLatLng([lat, lon]);
+    } else {
+      marker = L.marker([lat, lon], { draggable: true })
+        .addTo(map)
+        .bindPopup("Drag this pin to exact waste location")
+        .openPopup();
+
+      marker.on("dragend", function() {
+        const position = marker.getLatLng();
+        updateCoordinates(position.lat, position.lng);
+        document.getElementById("locationStatus").innerText = "Location updated ✔";
+      });
+    }
+
+    updateCoordinates(lat, lon);
+  }
+
+  function getLocation() {
+    const status = document.getElementById("locationStatus");
+    status.innerText = "Detecting location...";
+
+    if (!navigator.geolocation) {
+      status.innerText = "Geolocation is not supported.";
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        map.setView([lat, lon], 16);
+        placeMarker(lat, lon);
+
+        status.innerText = "Location detected. Drag pin if needed.";
+      },
+      function() {
+        status.innerText = "Permission denied. Click on map to select manually.";
+      }
+    );
+  }
+
+  map.on("click", function(e) {
+    placeMarker(e.latlng.lat, e.latlng.lng);
+    document.getElementById("locationStatus").innerText = "Location selected ✔";
+  });
+</script>
+
+{% endblock content %} 

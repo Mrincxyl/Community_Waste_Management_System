@@ -1,0 +1,97 @@
+
+<section class="py-20 bg-gradient-to-b from-green-50 to-gray-100">
+
+    <div class="max-w-6xl mx-auto px-6">
+
+        <h2 class="text-3xl font-bold text-center mb-14 text-gray-800">
+            Recent Waste Reports
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-8">
+
+            {% for report in reports %}
+
+                {% if report.status == "resolved" %}
+
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-2xl transition border-t-4 border-green-500">
+
+                {% elif report.status == "in_progress" %}
+
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-2xl transition border-t-4 border-yellow-400">
+
+                {% elif report.status == "pending" %}
+
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-2xl transition border-t-4 border-red-500">
+
+                {% elif report.status == "rejected" %}
+
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-2xl transition border-t-4 border-gray-500">
+
+                {% else %}
+
+                    <div class="bg-white p-6 rounded-xl shadow hover:shadow-2xl transition border-t-4 border-gray-300">
+
+                {% endif %}
+
+                    <!-- User & Status -->
+                    <div class="flex justify-between items-center mb-4">
+
+                        <span class="text-sm text-gray-600 font-medium">
+                            {{ report.user.username }}
+                        </span>
+
+                        <!-- Status Badge -->
+                        {% if report.status == "resolved" %}
+
+                            <span class="bg-green-100 text-green-700 px-3 py-1 text-xs rounded-full font-semibold">
+                                {{ report.get_status_display }}
+                            </span>
+
+                        {% elif report.status == "in_progress" %}
+
+                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 text-xs rounded-full font-semibold">
+                                {{ report.get_status_display }}
+                            </span>
+
+                        {% elif report.status == "pending" %}
+
+                            <span class="bg-red-100 text-red-700 px-3 py-1 text-xs rounded-full font-semibold">
+                                {{ report.get_status_display }}
+                            </span>
+
+                        {% elif report.status == "rejected" %}
+
+                            <span class="bg-gray-100 text-gray-700 px-3 py-1 text-xs rounded-full font-semibold">
+                                {{ report.get_status_display }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                    <!-- Waste Type -->
+                    <h3 class="font-semibold text-lg mb-2 text-gray-800">
+                        {{ report.get_waste_type_display }}
+                    </h3>
+
+                    <!-- Description -->
+                    <p class="text-gray-600 text-sm">
+                        {{ report.description }}
+                    </p>
+
+                </div>
+
+            {% empty %}
+
+                <div class="col-span-3 text-center text-gray-500">
+                    No waste reports available.
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+

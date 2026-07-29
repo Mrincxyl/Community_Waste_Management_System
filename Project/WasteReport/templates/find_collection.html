@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Find Waste Collection | WasteTracker
+{% endblock title %}
+
+{% block content %}
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+<section class="pt-28 pb-10 bg-green-50">
+  <div class="max-w-7xl mx-auto px-6 text-center">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+      Find Waste Collection Points
+    </h1>
+
+    <p class="text-gray-600 max-w-2xl mx-auto">
+      Locate nearby waste collection bins and centers in your area.
+    </p>
+  </div>
+</section>
+
+<!-- Location Controls -->
+<section class="bg-white">
+  <div class="max-w-6xl mx-auto px-6 py-6 flex justify-center">
+    <button
+      onclick="getLocation()"
+      class="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 shadow-md transition">
+      📍 Detect My Location
+    </button>
+  </div>
+</section>
+
+<!-- Map Section -->
+<section class="bg-white">
+  <div class="max-w-6xl mx-auto px-6 pb-14">
+    <div
+      id="map"
+      class="w-full h-[500px] rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+    </div>
+  </div>
+</section>
+
+<!-- Nearby Collection Points -->
+<section class="py-16 bg-gray-100">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <div class="text-center mb-10">
+      <h2 class="text-2xl md:text-3xl font-bold text-gray-900">
+        Nearby Collection Points
+      </h2>
+      <p class="text-gray-600 mt-2">
+        Example collection centers available around your location.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition">
+        <h3 class="font-semibold text-gray-900">📍 Park Street Bin</h3>
+        <p class="text-sm text-gray-600 mt-3">Distance: 350 meters</p>
+        <p class="text-sm text-gray-600">Open: 6AM – 9PM</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition">
+        <h3 class="font-semibold text-gray-900">📍 Salt Lake Bin</h3>
+        <p class="text-sm text-gray-600 mt-3">Distance: 700 meters</p>
+        <p class="text-sm text-gray-600">Open: 24 Hours</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition">
+        <h3 class="font-semibold text-gray-900">📍 New Town Collection</h3>
+        <p class="text-sm text-gray-600 mt-3">Distance: 1.2 km</p>
+        <p class="text-sm text-gray-600">Open: 7AM – 8PM</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+  let map = L.map('map').setView([22.5726, 88.3639], 12);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  const collectionPoints = [
+    {
+      name: "Park Street Waste Bin",
+      lat: 22.5726,
+      lon: 88.3639
+    },
+    {
+      name: "Salt Lake Community Bin",
+      lat: 22.5790,
+      lon: 88.4310
+    },
+    {
+      name: "New Town Collection Center",
+      lat: 22.6010,
+      lon: 88.4700
+    }
+  ];
+
+  collectionPoints.forEach(point => {
+    L.marker([point.lat, point.lon])
+      .addTo(map)
+      .bindPopup(point.name);
+  });
+
+  let userMarker = null;
+
+  function getLocation() {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        let lat = position.coords.latitude;
+        let lon = position.coords.longitude;
+
+        map.setView([lat, lon], 15);
+
+        if (userMarker) {
+          map.removeLayer(userMarker);
+        }
+
+        userMarker = L.marker([lat, lon])
+          .addTo(map)
+          .bindPopup("📍 You are here")
+          .openPopup();
+      },
+      function(error) {
+        alert("Unable to detect location. Please allow location permission.");
+      }
+    );
+  }
+</script>
+
+{% endblock content %}

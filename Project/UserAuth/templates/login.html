@@ -29,7 +29,7 @@ Login to your WasteTracker account
 <div class="flex items-center border rounded-lg px-3">
 <span class="text-gray-400 mr-2">📧</span>
 <input
-type="email"
+type="text"
 name="email"
 placeholder="Enter your email"
 class="w-full py-2 outline-none">
@@ -70,7 +70,7 @@ Create Account
 </p>
 
 <p class="mt-2">
-<a href="#" class="hover:text-green-600">
+<a href="{% url "forget_password" %}" class="hover:text-green-600">
 Forgot Password?
 </a>
 </p>

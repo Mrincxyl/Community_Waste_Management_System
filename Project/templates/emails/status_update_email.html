@@ -1,0 +1,98 @@
+{% extends "emails/base_email.html" %}
+
+{% block title %}
+Waste Report Status Updated
+{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-top:0;color:#1e293b;">
+    Hello {{ user.full_name }},
+</h2>
+
+<p style="font-size:16px;color:#555;">
+    Great news! Your waste report has been updated by the municipality.
+</p>
+
+<table>
+
+<tr>
+    <td class="label">📌 Report Title</td>
+    <td>{{ report.title }}</td>
+</tr>
+
+<tr>
+    <td class="label">♻ Waste Type</td>
+    <td>{{ report.get_waste_type_display }}</td>
+</tr>
+
+<tr>
+    <td class="label">🚨 Priority</td>
+    <td>{{ report.get_urgency_level_display }}</td>
+</tr>
+
+<tr>
+    <td class="label">📍 Current Status</td>
+    <td>
+        <span class="status">
+            {{ report.get_status_display }}
+        </span>
+    </td>
+</tr>
+
+<tr>
+    <td class="label">📅 Updated On</td>
+    <td>{{ report.updated_at|date:"d M Y, h:i A" }}</td>
+</tr>
+
+</table>
+
+<div style="margin-top:35px;padding:20px;background:#EFF6FF;border-left:5px solid #2563EB;border-radius:8px;">
+
+<strong>What happens next?</strong>
+
+<p style="margin-top:10px;color:#555;line-height:1.8;">
+
+{% if report.status == "pending" %}
+
+Your report has been received and is awaiting review by the municipality.
+
+{% elif report.status == "in_progress" %}
+
+Our municipality team has started working on your report. Thank you for your patience.
+
+{% elif report.status == "resolved" %}
+
+🎉 Your reported issue has been successfully resolved. Thank you for helping keep your community clean.
+
+{% elif report.status == "rejected" %}
+
+Unfortunately, your report could not be processed. Please review the report details and submit a new report if necessary.
+
+{% endif %}
+
+</p>
+
+</div>
+
+<p style="margin-top:30px;color:#555;">
+You will continue receiving updates whenever the status of your report changes.
+</p>
+
+<p style="margin-top:40px;">
+
+<a href="http://127.0.0.1:8000/my_reports/" class="button">
+
+View My Reports
+
+</a>
+
+</p>
+
+<p style="margin-top:35px;">
+
+Thank you for making our city cleaner. 🌱
+
+</p>
+
+{% endblock %} 

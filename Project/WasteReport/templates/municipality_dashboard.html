@@ -1,0 +1,1386 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}
+Municipality Dashboard
+{% endblock %}
+
+
+{% block content %}
+
+<section class="min-h-screen bg-slate-50 px-4 py-24">
+
+    <div class="max-w-7xl mx-auto space-y-8">
+
+
+        <!-- ================================================= -->
+        <!-- HEADER -->
+        <!-- ================================================= -->
+
+        <div>
+
+            <p class="text-sm font-bold text-emerald-600
+                      uppercase tracking-wider">
+
+                Municipality Panel
+
+            </p>
+
+
+            <h1 class="mt-2 text-3xl md:text-4xl
+                       font-extrabold text-slate-950">
+
+                Waste Reports Dashboard
+
+            </h1>
+
+
+            <p class="mt-2 text-sm text-slate-500">
+
+                Review citizen reports and manage their
+                resolution status.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- STATISTICS -->
+        <!-- ================================================= -->
+
+        <div class="grid grid-cols-1 sm:grid-cols-2
+                    lg:grid-cols-4 gap-6">
+
+
+            <!-- TOTAL -->
+
+            <div class="bg-white rounded-3xl
+                        border border-slate-200
+                        p-6 shadow-sm
+                        hover:shadow-lg
+                        transition">
+
+                <p class="text-sm font-medium text-slate-500">
+                    Total Reports
+                </p>
+
+                <h2 class="mt-3 text-3xl font-extrabold
+                           text-slate-950">
+
+                    {{ reports|length }}
+
+                </h2>
+
+            </div>
+
+
+
+            <!-- PENDING -->
+
+            <div class="bg-white rounded-3xl
+                        border border-red-200
+                        p-6 shadow-sm
+                        hover:shadow-lg
+                        transition">
+
+                <p class="text-sm font-medium text-red-600">
+                    Pending
+                </p>
+
+                <h2 class="mt-3 text-3xl font-extrabold
+                           text-red-700">
+
+                    {{ pending }}
+
+                </h2>
+
+            </div>
+
+
+
+            <!-- IN PROGRESS -->
+
+            <div class="bg-white rounded-3xl
+                        border border-blue-200
+                        p-6 shadow-sm
+                        hover:shadow-lg
+                        transition">
+
+                <p class="text-sm font-medium text-blue-600">
+                    In Progress
+                </p>
+
+                <h2 class="mt-3 text-3xl font-extrabold
+                           text-blue-700">
+
+                    {{ in_progress }}
+
+                </h2>
+
+            </div>
+
+
+
+            <!-- RESOLVED -->
+
+            <div class="bg-white rounded-3xl
+                        border border-emerald-200
+                        p-6 shadow-sm
+                        hover:shadow-lg
+                        transition">
+
+                <p class="text-sm font-medium text-emerald-600">
+                    Resolved
+                </p>
+
+                <h2 class="mt-3 text-3xl font-extrabold
+                           text-emerald-700">
+
+                    {{ resolved }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- STATUS DROPDOWNS -->
+        <!-- ================================================= -->
+
+        <div class="space-y-5">
+
+
+
+            <!-- ================================================= -->
+            <!-- PENDING -->
+            <!-- ================================================= -->
+
+            <details
+                class="group bg-white rounded-3xl
+                       border border-red-200
+                       shadow-sm overflow-hidden"
+                open
+            >
+
+                <summary
+                    class="list-none cursor-pointer
+                           px-6 py-5
+                           bg-gradient-to-r
+                           from-red-50 to-white
+                           hover:from-red-100
+                           transition"
+                >
+
+                    <div class="flex items-center
+                                justify-between gap-4">
+
+
+                        <div class="flex items-center gap-4">
+
+
+                            <!-- ICON -->
+
+                            <div class="h-12 w-12
+                                        rounded-2xl
+                                        bg-red-100
+                                        flex items-center
+                                        justify-center">
+
+                                <span class="text-xl">
+                                    ⏳
+                                </span>
+
+                            </div>
+
+
+                            <!-- TITLE -->
+
+                            <div>
+
+                                <h2 class="text-lg md:text-xl
+                                           font-extrabold
+                                           text-slate-950">
+
+                                    Pending Reports
+
+                                </h2>
+
+                                <p class="text-sm text-slate-500">
+
+                                    Reports waiting for
+                                    municipal action
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- COUNT -->
+
+                        <div class="flex items-center gap-3">
+
+                            <span
+                                class="rounded-full
+                                       bg-red-100
+                                       px-4 py-2
+                                       text-xs md:text-sm
+                                       font-bold
+                                       text-red-700"
+                            >
+
+                                {{ pending }} Pending
+
+                            </span>
+
+
+                            <span
+                                class="text-xl
+                                       text-slate-400
+                                       transition
+                                       group-open:rotate-180"
+                            >
+
+                                ▼
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </summary>
+
+
+
+                <!-- PENDING REPORTS -->
+
+                <div class="p-6 border-t border-red-100">
+
+                    <div class="grid grid-cols-1
+                                md:grid-cols-2
+                                xl:grid-cols-3 gap-5">
+
+
+                        {% for report in reports %}
+
+                            {% if report.status == "pending" %}
+
+
+                            <!-- REPORT CARD -->
+
+                            <div
+                                class="relative bg-white
+                                       rounded-2xl
+                                       border border-red-100
+                                       p-5
+                                       shadow-sm
+                                       hover:shadow-xl
+                                       hover:-translate-y-1
+                                       transition
+                                       overflow-hidden"
+                            >
+
+
+                                <!-- RED STRIP -->
+
+                                <div
+                                    class="absolute top-0
+                                           left-0 right-0
+                                           h-1 bg-red-500"
+                                ></div>
+
+
+
+                                <!-- TITLE -->
+
+                                <div class="mt-2">
+
+                                    <p
+                                        class="text-xs font-bold
+                                               uppercase
+                                               tracking-wider
+                                               text-red-500"
+                                    >
+
+                                        {{ report.get_waste_type_display }}
+
+                                    </p>
+
+
+                                    <h3
+                                        class="mt-1 text-lg
+                                               font-extrabold
+                                               text-slate-900"
+                                    >
+
+                                        {{ report.title }}
+
+                                    </h3>
+
+                                </div>
+
+
+
+                                <!-- DESCRIPTION -->
+
+                                <p
+                                    class="mt-3 text-sm
+                                           text-slate-500
+                                           line-clamp-2"
+                                >
+
+                                    {{ report.description }}
+
+                                </p>
+
+
+
+                                <!-- USER -->
+
+                                <div
+                                    class="mt-5 flex
+                                           justify-between
+                                           text-xs"
+                                >
+
+                                    <span class="text-slate-400">
+                                        Citizen
+                                    </span>
+
+                                    <span
+                                        class="font-semibold
+                                               text-slate-700"
+                                    >
+
+                                        {{ report.user.get_username }}
+
+                                    </span>
+
+                                </div>
+
+
+
+                                <!-- LOCATION -->
+
+                                <div
+                                    class="mt-2 flex
+                                           justify-between
+                                           text-xs"
+                                >
+
+                                    <span class="text-slate-400">
+                                        Location
+                                    </span>
+
+                                    <span
+                                        class="font-semibold
+                                               text-slate-700
+                                               max-w-[180px]
+                                               truncate"
+                                    >
+
+                                        {{ report.landmark|default:"Not provided" }}
+
+                                    </span>
+
+                                </div>
+
+
+
+                                <!-- DATE -->
+
+                                <div
+                                    class="mt-2 flex
+                                           justify-between
+                                           text-xs"
+                                >
+
+                                    <span class="text-slate-400">
+                                        Submitted
+                                    </span>
+
+                                    <span class="text-slate-600">
+
+                                        {{ report.created_at|date:"d M Y" }}
+
+                                    </span>
+
+                                </div>
+
+
+
+                                <!-- URGENCY -->
+
+                                <div class="mt-4">
+
+                                    {% if report.urgency_level == "high" %}
+
+                                        <span
+                                            class="inline-flex
+                                                   rounded-full
+                                                   bg-red-100
+                                                   px-3 py-1
+                                                   text-xs font-bold
+                                                   text-red-700"
+                                        >
+
+                                            ● High Priority
+
+                                        </span>
+
+                                    {% elif report.urgency_level == "medium" %}
+
+                                        <span
+                                            class="inline-flex
+                                                   rounded-full
+                                                   bg-yellow-100
+                                                   px-3 py-1
+                                                   text-xs font-bold
+                                                   text-yellow-700"
+                                        >
+
+                                            ● Medium Priority
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span
+                                            class="inline-flex
+                                                   rounded-full
+                                                   bg-slate-100
+                                                   px-3 py-1
+                                                   text-xs font-bold
+                                                   text-slate-600"
+                                        >
+
+                                            ● Low Priority
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+
+
+                                <!-- BUTTONS -->
+
+                                <div class="mt-5 flex gap-2">
+
+
+                                    <a
+                                        href="{% url 'update_report' report.id %}"
+                                        class="flex-1
+                                               text-center
+                                               rounded-xl
+                                               bg-red-600
+                                               px-4 py-2.5
+                                               text-xs font-bold
+                                               text-white
+                                               hover:bg-red-700
+                                               transition"
+                                    >
+
+                                        Review
+
+                                    </a>
+
+
+
+                                    {% if report.image %}
+
+                                    <a
+                                        href="{{ report.image.url }}"
+                                        target="_blank"
+                                        class="rounded-xl
+                                               border
+                                               border-slate-200
+                                               px-4 py-2.5
+                                               text-xs font-bold
+                                               text-slate-600
+                                               hover:bg-slate-50"
+                                    >
+
+                                        Image
+
+                                    </a>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+
+                            {% endif %}
+
+                        {% empty %}
+
+                            <p
+                                class="col-span-full
+                                       text-center
+                                       py-8
+                                       text-sm
+                                       text-slate-400"
+                            >
+
+                                No pending reports.
+
+                            </p>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </details>
+
+
+
+            <!-- ================================================= -->
+            <!-- IN PROGRESS -->
+            <!-- ================================================= -->
+
+            <details
+                class="group bg-white rounded-3xl
+                       border border-blue-200
+                       shadow-sm overflow-hidden"
+            >
+
+                <summary
+                    class="list-none cursor-pointer
+                           px-6 py-5
+                           bg-gradient-to-r
+                           from-blue-50 to-white
+                           hover:from-blue-100
+                           transition"
+                >
+
+                    <div class="flex items-center
+                                justify-between gap-4">
+
+
+                        <div class="flex items-center gap-4">
+
+                            <div
+                                class="h-12 w-12 rounded-2xl
+                                       bg-blue-100
+                                       flex items-center
+                                       justify-center"
+                            >
+
+                                <span class="text-xl">
+                                    🔄
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <h2
+                                    class="text-lg md:text-xl
+                                           font-extrabold
+                                           text-slate-950"
+                                >
+
+                                    In Progress
+
+                                </h2>
+
+                                <p class="text-sm text-slate-500">
+
+                                    Reports currently being handled
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="flex items-center gap-3">
+
+                            <span
+                                class="rounded-full
+                                       bg-blue-100
+                                       px-4 py-2
+                                       text-xs md:text-sm
+                                       font-bold
+                                       text-blue-700"
+                            >
+
+                                {{ in_progress }} In Progress
+
+                            </span>
+
+
+                            <span
+                                class="text-xl text-slate-400
+                                       transition
+                                       group-open:rotate-180"
+                            >
+
+                                ▼
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </summary>
+
+
+
+                <div class="p-6 border-t border-blue-100">
+
+                    <div
+                        class="grid grid-cols-1
+                               md:grid-cols-2
+                               xl:grid-cols-3 gap-5"
+                    >
+
+                        {% for report in reports %}
+
+                            {% if report.status == "in_progress" %}
+
+
+                            <div
+                                class="relative bg-white
+                                       rounded-2xl
+                                       border border-blue-100
+                                       p-5
+                                       shadow-sm
+                                       hover:shadow-xl
+                                       hover:-translate-y-1
+                                       transition
+                                       overflow-hidden"
+                            >
+
+                                <div
+                                    class="absolute top-0
+                                           left-0 right-0
+                                           h-1 bg-blue-500"
+                                ></div>
+
+
+                                <div class="mt-2">
+
+                                    <p
+                                        class="text-xs font-bold
+                                               uppercase
+                                               tracking-wider
+                                               text-blue-500"
+                                    >
+
+                                        {{ report.get_waste_type_display }}
+
+                                    </p>
+
+
+                                    <h3
+                                        class="mt-1 text-lg
+                                               font-extrabold
+                                               text-slate-900"
+                                    >
+
+                                        {{ report.title }}
+
+                                    </h3>
+
+                                </div>
+
+
+                                <p
+                                    class="mt-3 text-sm
+                                           text-slate-500
+                                           line-clamp-2"
+                                >
+
+                                    {{ report.description }}
+
+                                </p>
+
+
+                                <div
+                                    class="mt-5 flex
+                                           justify-between
+                                           text-xs"
+                                >
+
+                                    <span class="text-slate-400">
+                                        Citizen
+                                    </span>
+
+                                    <span
+                                        class="font-semibold
+                                               text-slate-700"
+                                    >
+
+                                        {{ report.user.get_username }}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div
+                                    class="mt-2 flex
+                                           justify-between
+                                           text-xs"
+                                >
+
+                                    <span class="text-slate-400">
+                                        Location
+                                    </span>
+
+                                    <span
+                                        class="font-semibold
+                                               text-slate-700
+                                               max-w-[180px]
+                                               truncate"
+                                    >
+
+                                        {{ report.landmark|default:"Not provided" }}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div
+                                    class="mt-2 flex
+                                           justify-between
+                                           text-xs"
+                                >
+
+                                    <span class="text-slate-400">
+                                        Updated
+                                    </span>
+
+                                    <span class="text-slate-600">
+
+                                        {{ report.updated_at|date:"d M Y" }}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="mt-5 flex gap-2">
+
+                                    <a
+                                        href="{% url 'update_report' report.id %}"
+                                        class="flex-1
+                                               text-center
+                                               rounded-xl
+                                               bg-blue-600
+                                               px-4 py-2.5
+                                               text-xs font-bold
+                                               text-white
+                                               hover:bg-blue-700
+                                               transition"
+                                    >
+
+                                        Update Status
+
+                                    </a>
+
+
+                                    {% if report.image %}
+
+                                    <a
+                                        href="{{ report.image.url }}"
+                                        target="_blank"
+                                        class="rounded-xl
+                                               border
+                                               border-slate-200
+                                               px-4 py-2.5
+                                               text-xs font-bold
+                                               text-slate-600
+                                               hover:bg-slate-50"
+                                    >
+
+                                        Image
+
+                                    </a>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </details>
+
+
+
+            <!-- ================================================= -->
+            <!-- RESOLVED -->
+            <!-- ================================================= -->
+
+            <details
+                class="group bg-white rounded-3xl
+                       border border-emerald-200
+                       shadow-sm overflow-hidden"
+            >
+
+                <summary
+                    class="list-none cursor-pointer
+                           px-6 py-5
+                           bg-gradient-to-r
+                           from-emerald-50 to-white
+                           hover:from-emerald-100
+                           transition"
+                >
+
+                    <div class="flex items-center
+                                justify-between gap-4">
+
+
+                        <div class="flex items-center gap-4">
+
+                            <div
+                                class="h-12 w-12 rounded-2xl
+                                       bg-emerald-100
+                                       flex items-center
+                                       justify-center"
+                            >
+
+                                <span class="text-xl">
+                                    ✓
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <h2
+                                    class="text-lg md:text-xl
+                                           font-extrabold
+                                           text-slate-950"
+                                >
+
+                                    Resolved Reports
+
+                                </h2>
+
+                                <p class="text-sm text-slate-500">
+
+                                    Successfully completed reports
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="flex items-center gap-3">
+
+                            <span
+                                class="rounded-full
+                                       bg-emerald-100
+                                       px-4 py-2
+                                       text-xs md:text-sm
+                                       font-bold
+                                       text-emerald-700"
+                            >
+
+                                {{ resolved }} Resolved
+
+                            </span>
+
+
+                            <span
+                                class="text-xl text-slate-400
+                                       transition
+                                       group-open:rotate-180"
+                            >
+
+                                ▼
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </summary>
+
+
+
+                <div
+                    class="p-6
+                           border-t
+                           border-emerald-100"
+                >
+
+                    <div
+                        class="grid grid-cols-1
+                               md:grid-cols-2
+                               xl:grid-cols-3 gap-5"
+                    >
+
+                        {% for report in reports %}
+
+                            {% if report.status == "resolved" %}
+
+
+                            <div
+                                class="relative bg-white
+                                       rounded-2xl
+                                       border border-emerald-100
+                                       p-5
+                                       shadow-sm
+                                       hover:shadow-xl
+                                       hover:-translate-y-1
+                                       transition
+                                       overflow-hidden"
+                            >
+
+                                <div
+                                    class="absolute top-0
+                                           left-0 right-0
+                                           h-1 bg-emerald-500"
+                                ></div>
+
+
+                                <div class="mt-2">
+
+                                    <p
+                                        class="text-xs font-bold
+                                               uppercase
+                                               tracking-wider
+                                               text-emerald-500"
+                                    >
+
+                                        {{ report.get_waste_type_display }}
+
+                                    </p>
+
+
+                                    <h3
+                                        class="mt-1 text-lg
+                                               font-extrabold
+                                               text-slate-900"
+                                    >
+
+                                        {{ report.title }}
+
+                                    </h3>
+
+                                </div>
+
+
+                                <p
+                                    class="mt-3 text-sm
+                                           text-slate-500
+                                           line-clamp-2"
+                                >
+
+                                    {{ report.description }}
+
+                                </p>
+
+
+                                <div
+                                    class="mt-5 flex
+                                           justify-between
+                                           text-xs"
+                                >
+
+                                    <span class="text-slate-400">
+                                        Citizen
+                                    </span>
+
+                                    <span
+                                        class="font-semibold
+                                               text-slate-700"
+                                    >
+
+                                        {{ report.user.get_username }}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div
+                                    class="mt-2 flex
+                                           justify-between
+                                           text-xs"
+                                >
+
+                                    <span class="text-slate-400">
+                                        Location
+                                    </span>
+
+                                    <span
+                                        class="font-semibold
+                                               text-slate-700
+                                               max-w-[180px]
+                                               truncate"
+                                    >
+
+                                        {{ report.landmark|default:"Not provided" }}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div
+                                    class="mt-2 flex
+                                           justify-between
+                                           text-xs"
+                                >
+
+                                    <span class="text-slate-400">
+                                        Resolved
+                                    </span>
+
+                                    <span class="text-slate-600">
+
+                                        {{ report.updated_at|date:"d M Y" }}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="mt-5 flex gap-2">
+
+                                    <a
+                                        href="{% url 'update_report' report.id %}"
+                                        class="flex-1
+                                               text-center
+                                               rounded-xl
+                                               bg-emerald-600
+                                               px-4 py-2.5
+                                               text-xs font-bold
+                                               text-white
+                                               hover:bg-emerald-700
+                                               transition"
+                                    >
+
+                                        View Report
+
+                                    </a>
+
+
+                                    {% if report.image %}
+
+                                    <a
+                                        href="{{ report.image.url }}"
+                                        target="_blank"
+                                        class="rounded-xl
+                                               border
+                                               border-slate-200
+                                               px-4 py-2.5
+                                               text-xs font-bold
+                                               text-slate-600
+                                               hover:bg-slate-50"
+                                    >
+
+                                        Image
+
+                                    </a>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </details>
+
+
+
+            <!-- ================================================= -->
+            <!-- REJECTED -->
+            <!-- ================================================= -->
+
+            <details
+                class="group bg-white rounded-3xl
+                       border border-slate-200
+                       shadow-sm overflow-hidden"
+            >
+
+                <summary
+                    class="list-none cursor-pointer
+                           px-6 py-5
+                           bg-gradient-to-r
+                           from-slate-100 to-white
+                           hover:from-slate-200
+                           transition"
+                >
+
+                    <div class="flex items-center
+                                justify-between gap-4">
+
+
+                        <div class="flex items-center gap-4">
+
+                            <div
+                                class="h-12 w-12
+                                       rounded-2xl
+                                       bg-slate-200
+                                       flex items-center
+                                       justify-center"
+                            >
+
+                                <span class="text-xl">
+                                    ✕
+                                </span>
+
+                            </div>
+
+
+                            <div>
+
+                                <h2
+                                    class="text-lg md:text-xl
+                                           font-extrabold
+                                           text-slate-950"
+                                >
+
+                                    Rejected Reports
+
+                                </h2>
+
+                                <p class="text-sm text-slate-500">
+
+                                    Reports that were rejected
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="flex items-center gap-3">
+
+                            <span
+                                class="rounded-full
+                                       bg-slate-200
+                                       px-4 py-2
+                                       text-xs md:text-sm
+                                       font-bold
+                                       text-slate-700"
+                            >
+
+                                {{ rejected }} Rejected
+
+                            </span>
+
+
+                            <span
+                                class="text-xl text-slate-400
+                                       transition
+                                       group-open:rotate-180"
+                            >
+
+                                ▼
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </summary>
+
+
+
+                <div
+                    class="p-6
+                           border-t
+                           border-slate-200"
+                >
+
+                    <div
+                        class="grid grid-cols-1
+                               md:grid-cols-2
+                               xl:grid-cols-3 gap-5"
+                    >
+
+                        {% for report in reports %}
+
+                            {% if report.status == "rejected" %}
+
+
+                            <div
+                                class="relative bg-white
+                                       rounded-2xl
+                                       border border-slate-200
+                                       p-5
+                                       shadow-sm
+                                       hover:shadow-xl
+                                       hover:-translate-y-1
+                                       transition
+                                       overflow-hidden"
+                            >
+
+                                <div
+                                    class="absolute top-0
+                                           left-0 right-0
+                                           h-1 bg-slate-500"
+                                ></div>
+
+
+                                <div class="mt-2">
+
+                                    <p
+                                        class="text-xs font-bold
+                                               uppercase
+                                               tracking-wider
+                                               text-slate-500"
+                                    >
+
+                                        {{ report.get_waste_type_display }}
+
+                                    </p>
+
+
+                                    <h3
+                                        class="mt-1 text-lg
+                                               font-extrabold
+                                               text-slate-900"
+                                    >
+
+                                        {{ report.title }}
+
+                                    </h3>
+
+                                </div>
+
+
+                                <p
+                                    class="mt-3 text-sm
+                                           text-slate-500
+                                           line-clamp-2"
+                                >
+
+                                    {{ report.description }}
+
+                                </p>
+
+
+                                <div
+                                    class="mt-5 flex
+                                           justify-between
+                                           text-xs"
+                                >
+
+                                    <span class="text-slate-400">
+                                        Citizen
+                                    </span>
+
+                                    <span
+                                        class="font-semibold
+                                               text-slate-700"
+                                    >
+
+                                        {{ report.user.get_username }}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div
+                                    class="mt-2 flex
+                                           justify-between
+                                           text-xs"
+                                >
+
+                                    <span class="text-slate-400">
+                                        Date
+                                    </span>
+
+                                    <span class="text-slate-600">
+
+                                        {{ report.updated_at|date:"d M Y" }}
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="mt-5">
+
+                                    <a
+                                        href="{% url 'update_report' report.id %}"
+                                        class="block
+                                               text-center
+                                               rounded-xl
+                                               bg-slate-800
+                                               px-4 py-2.5
+                                               text-xs font-bold
+                                               text-white
+                                               hover:bg-slate-900
+                                               transition"
+                                    >
+
+                                        View Report
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </details>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+```
