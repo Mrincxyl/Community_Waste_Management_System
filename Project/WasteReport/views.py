@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from .models import WasteReport, Notification
 from .forms import wasteReportForm, wasteReportUpdateForm
 from django.conf import settings
+from django.core.files.storage import default_storage   #Imported By Mahabir [To Store waste report image temporary]
+from . import waste_detection as wd
 
 from .email_utils import send_status_update_email, send_submit_report_email
 
@@ -16,34 +18,54 @@ def FindCollection(request):
 def ReportWaste(request):
     if request.method == 'POST':
         form = wasteReportForm(request.POST, request.FILES)
+
         if form.is_valid():
+            image = form.cleaned_data["image"]
+
+            path = default_storage.save(f"temp/{image.name}", image)
+            full_path = default_storage.path(path)
+
+            res = wd.predict_waste(full_path)
+
+            if res["detect_res"] == 0:
+                messages.error(
+                    request,
+                    "Your report could not be submitted because no significant waste was detected in the uploaded image."
+                )
+                return render(request, "report_waste.html", {"form": form})
+
+            messages.success(request, "Waste Detected Successfully!!")
+
             waste_report = form.save(commit=False)
             waste_report.user = request.user
-            
+
             municipality = Municipality.objects.filter(
                 state__iexact=waste_report.state,
                 district__iexact=waste_report.district,
                 city__iexact=waste_report.city,
                 status="approved"
             ).first()
-            
+
             if municipality:
                 waste_report.assigned_municipality = municipality
+
             waste_report.save()
-            
+
             try:
                 send_submit_report_email(waste_report)
             except Exception as e:
-                print(e)    
-                
-            messages.success(request, 'Waste report submitted successfully!')
-            return redirect('report_waste')
+                print(e)
+
+            messages.success(request, "Waste report submitted successfully!")
+            return redirect("report_waste")
+
         else:
-            print(form.errors)  # Print form errors to the console for debugging    
+            print(form.errors)
+
     else:
         form = wasteReportForm()
-    
-    return render(request,"report_waste.html",{'form': form })
+
+    return render(request, "report_waste.html", {"form": form})
 
 
 

@@ -1,0 +1,4 @@
+Django>=5.2
+ultralytics
+torch==2.7.1+cpu
+torchvision==0.22.1+cpu
