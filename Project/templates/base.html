@@ -8,12 +8,19 @@
 
 
 </head> 
-<body >
+<body class="bg-gray-50">
 
     {% include "nav.html" %}
-    {% include "message.html" %}
-    {% block content %}
-    {% endblock %}
+
+    <main class="pt-20">
+
+        {% include "message.html" %}
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
     {% include "helpdesk.html" %}
     {% include "footer.html" %}
 
