@@ -1,8 +1,8 @@
 {% if messages %}
-<div class="fixed top-5 right-5 space-y-3 z-50">
+<div class="fixed top-5 right-5 space-y-3 z-[9999]">
     {% for message in messages %}
 
-    <div class="
+    <div class="message-toast
         flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg
         {% if message.tags == 'success' %} bg-green-500 text-white {% endif %}
         {% if message.tags == 'error' %} bg-red-500 text-white {% endif %}
@@ -35,7 +35,7 @@
 <!-- Auto dismiss -->
 <script>
     setTimeout(() => {
-        document.querySelectorAll('.fixed > div').forEach(el => {
+        document.querySelectorAll('.message-toast').forEach(el => {
             el.style.transition = "opacity 0.5s ease";
             el.style.opacity = "0";
             setTimeout(() => el.remove(), 500);

@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+
+{% block title %}
+Officer Registration | Community Waste Reporting System
+{% endblock %}
+
+{% block content %}
+
+<section class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4">
+
+    <div class="max-w-3xl mx-auto">
+
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-green-100 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke-width="1.8" stroke="currentColor" class="w-7 h-7 text-green-600">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/>
+                </svg>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">
+                Municipality Officer Registration
+            </h1>
+            <p class="mt-2 text-gray-500 text-sm md:text-base max-w-md mx-auto">
+                Register your municipality to access the officer dashboard and manage waste reports.
+            </p>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+
+            <form method="POST" enctype="multipart/form-data" class="p-6 md:p-8">
+                {% csrf_token %}
+
+                <!-- ================= OFFICER INFORMATION ================= -->
+                <div class="mb-10">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke-width="1.8" stroke="currentColor" class="w-4 h-4 text-green-600">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-lg font-bold text-gray-800">Officer Information</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-5">
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Full Name <span class="text-red-500">*</span>
+                            </label>
+                            {{ user_form.full_name }}
+                            {% if user_form.full_name.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ user_form.full_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Username <span class="text-red-500">*</span>
+                            </label>
+                            {{ user_form.username }}
+                            {% if user_form.username.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ user_form.username.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Email <span class="text-red-500">*</span>
+                            </label>
+                            {{ user_form.email }}
+                            {% if user_form.email.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ user_form.email.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Phone <span class="text-red-500">*</span>
+                            </label>
+                            {{ user_form.phone }}
+                            {% if user_form.phone.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ user_form.phone.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Password <span class="text-red-500">*</span>
+                            </label>
+                            {{ user_form.password1 }}
+                            {% if user_form.password1.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ user_form.password1.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Confirm Password <span class="text-red-500">*</span>
+                            </label>
+                            {{ user_form.password2 }}
+                            {% if user_form.password2.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ user_form.password2.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="border-t border-gray-100 my-8"></div>
+
+                <!-- ================= MUNICIPALITY INFORMATION ================= -->
+                <div class="mb-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke-width="1.8" stroke="currentColor" class="w-4 h-4 text-blue-600">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-lg font-bold text-gray-800">Municipality Information</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-5">
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Municipality Name <span class="text-red-500">*</span>
+                            </label>
+                            {{ municipality_form.organization_name }}
+                            {% if municipality_form.organization_name.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ municipality_form.organization_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Designation <span class="text-red-500">*</span>
+                            </label>
+                            {{ municipality_form.designation }}
+                            {% if municipality_form.designation.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ municipality_form.designation.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Official Email <span class="text-red-500">*</span>
+                            </label>
+                            {{ municipality_form.official_email }}
+                            {% if municipality_form.official_email.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ municipality_form.official_email.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Official Phone <span class="text-red-500">*</span>
+                            </label>
+                            {{ municipality_form.phone }}
+                            {% if municipality_form.phone.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ municipality_form.phone.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                State <span class="text-red-500">*</span>
+                            </label>
+                            {{ municipality_form.state }}
+                            {% if municipality_form.state.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ municipality_form.state.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                District <span class="text-red-500">*</span>
+                            </label>
+                            {{ municipality_form.district }}
+                            {% if municipality_form.district.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ municipality_form.district.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Municipality / City <span class="text-red-500">*</span>
+                            </label>
+                            {{ municipality_form.city }}
+                            {% if municipality_form.city.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ municipality_form.city.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Office Address <span class="text-red-500">*</span>
+                            </label>
+                            {{ municipality_form.address }}
+                            {% if municipality_form.address.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ municipality_form.address.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                                Verification Document <span class="text-red-500">*</span>
+                            </label>
+                            {{ municipality_form.verification_document }}
+                            <p class="mt-1.5 text-xs text-gray-400">
+                                Upload official ID or authorization letter (PDF, JPG, PNG – Max 5MB)
+                            </p>
+                            {% if municipality_form.verification_document.errors %}
+                                <p class="mt-1 text-xs text-red-500">{{ municipality_form.verification_document.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit"
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3.5 rounded-xl transition duration-300 shadow-sm hover:shadow-md flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+                    </svg>
+                    Submit Registration
+                </button>
+
+                <p class="mt-6 text-center text-sm text-gray-500">
+                    Already registered?
+                    <a href="{% url 'login' %}" class="text-green-600 font-semibold hover:text-green-700">
+                        Login here
+                    </a>
+                </p>
+
+            </form>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .forms import MunicipalityForm
+from .forms import MunicipalityForm, OfficerRegistrationForm
 from .models import Municipality
 
 from .models import customUser as User   
@@ -16,6 +16,8 @@ from django.conf import settings
 from .email_utils import send_welcome_email, send_otp_email, send_municipality_applied_email
 
 # Create your views here.
+
+
 
 def Login(request):
     
@@ -116,6 +118,71 @@ def Logout(request):
     messages.success(request,"Logged out successfully")
     return redirect('home')
 
+
+def officer_portal(request):
+    return render(request,"officer_portal.html")
+
+
+def officer_login(request):
+    return render(request, "officer_login.html")
+
+
+def officer_register(request):
+
+    if request.method == "POST":
+
+        user_form = OfficerRegistrationForm(request.POST)
+        municipality_form = MunicipalityForm(
+            request.POST,
+            request.FILES
+        )
+
+        if user_form.is_valid() and municipality_form.is_valid():
+
+            user = user_form.save(commit=False)
+            
+            base_username = user.email.split("@")[0]
+            username = base_username
+            counter = 1
+
+            while User.objects.filter(username=username).exists():
+                username = f"{base_username}{counter}"
+                counter += 1
+
+            user.username = username
+
+            # Municipality Officer
+            user.role = "municipality"
+
+            user.save()
+
+            municipality = municipality_form.save(commit=False)
+            municipality.user = user
+            municipality.status = "pending"
+            municipality.save()
+
+            messages.success(
+                request,
+                "Registration submitted successfully. Your account is awaiting administrator approval."
+            )
+
+            return redirect("officer_login")
+
+    else:
+
+        user_form = OfficerRegistrationForm()
+        municipality_form = MunicipalityForm()
+
+    context = {
+        "user_form": user_form,
+        "municipality_form": municipality_form,
+    }
+
+    return render(
+        request,
+        "officer_register.html",
+        context
+    )
 
 @login_required(login_url='login')
 def apply_municipality(request):

@@ -1,6 +1,8 @@
 from django import forms
 from .models import Municipality
 
+from django.contrib.auth.forms import UserCreationForm
+from .models import customUser
 
 class MunicipalityForm(forms.ModelForm):
     class Meta:
@@ -66,6 +68,23 @@ class MunicipalityForm(forms.ModelForm):
                 "class": "block w-full text-sm text-gray-600 file:mr-4 file:py-3 file:px-5 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
             }),
         }
-        
+
+
+
+
+class OfficerRegistrationForm(UserCreationForm):
+
+    class Meta:
+
+        model = customUser
+
+        fields = (
+            "full_name",
+            "username",
+            "email",
+            "phone",
+            "password1",
+            "password2",
+        )       
         
         

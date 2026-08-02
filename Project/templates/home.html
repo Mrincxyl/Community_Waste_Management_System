@@ -8,153 +8,308 @@ Home | Community Waste Reporting System
 {% block content %}
 
 <!-- ================= HERO SECTION ================= -->
-<section class="relative min-h-[680px] flex items-center overflow-hidden">
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden">
 
-    <!-- Background -->
+    <!-- Background Image -->
     <div class="absolute inset-0">
         <img
             src="{% static 'images/garbage.jpg' %}"
             alt="Community Waste Management"
             class="w-full h-full object-cover">
 
-        <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-black/30"></div>
+        <!-- Dark Overlay -->
+        <div class="absolute inset-0 bg-black/55"></div>
+
+        <!-- Green Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-black/90"></div>
     </div>
 
     <!-- Hero Content -->
-    <div class="relative z-10 max-w-7xl mx-auto w-full px-6 pt-24">
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-6 py-12">
 
-        <div class="max-w-3xl text-white">
+        <div class="text-center">
 
             <!-- Badge -->
-            <span class="inline-flex items-center rounded-full bg-green-500/20 border border-green-400/30 px-4 py-2 text-sm font-semibold text-green-200 backdrop-blur">
-                ♻️ Smart Community Waste Reporting
+            <span class="inline-flex items-center rounded-full bg-green-500/20 border border-green-400/30 px-5 py-2 text-sm font-semibold text-green-200 backdrop-blur-md">
+                ♻ Smart Community Waste Reporting
             </span>
 
             <!-- Animated Heading -->
-            <h1
-                id="hero-title"
-                class="mt-6 text-4xl md:text-6xl font-extrabold leading-tight tracking-tight min-h-[170px]">
+            <h1 id="hero-title"
+                class="mt-5 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-snug tracking-tight max-w-4xl mx-auto min-h-[80px] md:min-h-[100px]">
             </h1>
 
             <!-- Subtitle -->
-            <p class="mt-6 text-lg md:text-xl text-gray-200 leading-relaxed max-w-2xl">
-                Report waste issues, share exact locations, and help local authorities
-                resolve problems faster through a transparent and efficient tracking
-                system.
+            <p class="mt-3 max-w-2xl mx-auto text-base md:text-lg text-gray-200 leading-relaxed">
+                Report waste issues, track progress, and help build a cleaner, healthier community.
             </p>
-
-            <!-- Buttons -->
-            <div class="mt-10 flex flex-col sm:flex-row gap-4">
-
-                <a href="{% url 'report_waste' %}"
-                    class="inline-flex items-center justify-center rounded-xl bg-green-500 px-7 py-3.5 font-semibold text-white shadow-lg transition hover:bg-green-600 hover:scale-105">
-                    Report Waste Issue
-                </a>
-
-                <a href="#reports"
-                    class="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/10 px-7 py-3.5 font-semibold text-white backdrop-blur transition hover:bg-white/20">
-                    View Recent Reports
-                </a>
-
-            </div>
 
         </div>
 
+
+        
+        
+        {% if not request.user.is_authenticated %}
+
+        <!-- ================= PORTAL SECTION ================= -->
+        <div id="portal-section" class="mt-8">
+
+            <!-- Section Title -->
+            <!-- ================= PORTAL SECTION HEADER ================= -->
+            <div class="text-center mb-8">
+
+                <!-- Badge -->
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-green-300 text-sm font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                    Select Your Access Portal
+                </span>
+
+                <!-- Description -->
+    
+
+            </div>
+
+            <!-- Portal Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+
+                <!-- Admin -->
+                <a href="/admin/"
+                   class="group bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-7 hover:bg-red-500/20 hover:border-red-400 transition duration-300 hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-2xl bg-red-500/20 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="1.8" stroke="currentColor" class="w-7 h-7 text-red-300">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z"/>
+                        </svg>
+                    </div>
+                    <h3 class="mt-5 text-xl font-bold text-white">Admin</h3>
+                    <span class="inline-block mt-2 px-3 py-1 rounded-full bg-red-500/20 text-red-200 text-xs">
+                        System Administration
+                    </span>
+                    <p class="mt-4 text-sm text-gray-300 leading-relaxed">
+                        Manage users, municipalities, workers and monitor the entire platform.
+                    </p>
+                    <div class="mt-6 font-semibold text-red-300 group-hover:text-white text-sm">
+                        Access Portal →
+                    </div>
+                </a>
+
+                <!-- Officers -->
+                <a href="{% url "officer_portal" %}"
+                   class="group bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-7 hover:bg-green-500/20 hover:border-green-400 transition duration-300 hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="1.8" stroke="currentColor" class="w-7 h-7 text-green-300">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/>
+                        </svg>
+                    </div>
+                    <h3 class="mt-5 text-xl font-bold text-white">Officers</h3>
+                    <span class="inline-block mt-2 px-3 py-1 rounded-full bg-green-500/20 text-green-200 text-xs">
+                        Municipality Portal
+                    </span>
+                    <p class="mt-4 text-sm text-gray-300 leading-relaxed">
+                        Review reports, assign workers and monitor municipality operations.
+                    </p>
+                    <div class="mt-6 font-semibold text-green-300 group-hover:text-white text-sm">
+                        Access Portal →
+                    </div>
+                </a>
+
+                <!-- Workers -->
+                <a href="#"
+                   class="group bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-7 hover:bg-orange-500/20 hover:border-orange-400 transition duration-300 hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-500/20 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="1.8" stroke="currentColor" class="w-7 h-7 text-orange-300">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+                        </svg>
+                    </div>
+                    <h3 class="mt-5 text-xl font-bold text-white">Workers</h3>
+                    <span class="inline-block mt-2 px-3 py-1 rounded-full bg-orange-500/20 text-orange-200 text-xs">
+                        Worker Portal
+                    </span>
+                    <p class="mt-4 text-sm text-gray-300 leading-relaxed">
+                        View assigned tasks, update work progress and complete cleaning activities.
+                    </p>
+                    <div class="mt-6 font-semibold text-orange-300 group-hover:text-white text-sm">
+                        Access Portal →
+                    </div>
+                </a>
+
+                <!-- Public -->
+                <a href="{% url 'register' %}"
+                   class="group bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-7 hover:bg-blue-500/20 hover:border-blue-400 transition duration-300 hover:-translate-y-2">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="1.8" stroke="currentColor" class="w-7 h-7 text-blue-300">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="mt-5 text-xl font-bold text-white">Public</h3>
+                    <span class="inline-block mt-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-200 text-xs">
+                        Citizen Portal
+                    </span>
+                    <p class="mt-4 text-sm text-gray-300 leading-relaxed">
+                        Report waste, track complaints and contribute to a cleaner community.
+                    </p>
+                    <div class="mt-6 font-semibold text-blue-300 group-hover:text-white text-sm">
+                        Get Started →
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+        {% endif %}
+
+        <!-- ================= ACTION BUTTONS ================= -->
+        <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+            <a href="{% url 'report_waste' %}"
+               class="rounded-xl bg-green-500 px-7 py-3.5 text-base font-semibold text-white shadow-xl transition duration-300 hover:bg-green-600 hover:scale-105 text-center">
+                Report Waste Issue
+            </a>
+
+            <a href="#reports"
+               class="rounded-xl border border-white/30 bg-white/10 backdrop-blur-md px-7 py-3.5 text-base font-semibold text-white transition duration-300 hover:bg-white/20 text-center">
+                View Recent Reports
+            </a>
+        </div>
+
+
+    
+
     </div>
-
 </section>
-
-<!-- ================= REPORTS ================= -->
-<div id="reports"></div>
-
-{% include "sample_reports.html" %}
 
 <!-- ================= TYPEWRITER SCRIPT ================= -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-
     const messages = [
-        "Keep Your Community Clean, Safe & Healthy",
-        "Smart Waste Management for a Greener Tomorrow",
-        "Together, We Reduce Waste and Build a Sustainable Future"
+        "Together, We Reduce Waste and Build a Cleaner Future",
+        "Smart Waste Management for Every Community",
+        "Report • Track • Resolve Waste Issues Efficiently"
     ];
 
     const heroTitle = document.getElementById("hero-title");
-
     let messageIndex = 0;
     let charIndex = 0;
     let deleting = false;
 
     function animateText() {
-
         const current = messages[messageIndex];
 
         if (!deleting) {
-
             heroTitle.textContent = current.substring(0, charIndex + 1);
             charIndex++;
 
             if (charIndex === current.length) {
-
                 deleting = true;
-                setTimeout(animateText, 2000);
-
+                setTimeout(animateText, 2200);
             } else {
-
-                setTimeout(animateText, 70);
-
+                setTimeout(animateText, 60);
             }
-
         } else {
-
             heroTitle.textContent = current.substring(0, charIndex - 1);
             charIndex--;
 
             if (charIndex === 0) {
-
                 deleting = false;
                 messageIndex = (messageIndex + 1) % messages.length;
-
                 setTimeout(animateText, 500);
-
             } else {
-
-                setTimeout(animateText, 35);
-
+                setTimeout(animateText, 30);
             }
-
         }
-
     }
 
     animateText();
-
 });
 </script>
 
-<!-- ================= STATS ================= -->
-<section class="py-20 bg-white">
+<!-- ================= STATS SECTION ================= -->
+<section class="py-16 bg-gradient-to-b from-white to-gray-50">
     <div class="max-w-7xl mx-auto px-6">
+
+        <div class="text-center mb-10">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800">Our Impact</h2>
+            <p class="mt-2 text-gray-500 text-sm md:text-base">Real-time numbers from the community</p>
+        </div>
 
         <div class="grid md:grid-cols-3 gap-6">
 
-            <div class="rounded-3xl border border-gray-100 bg-green-50 p-8 text-center shadow-sm hover:shadow-md transition">
-                <h3 class="text-4xl font-extrabold text-green-600">{{ info.report }}</h3>
-                <p class="mt-2 text-gray-700 font-medium">Issues Reported</p>
+            <!-- Issues Reported -->
+            <div class="group relative overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 to-emerald-500"></div>
+                <div class="p-7">
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke-width="1.8" stroke="currentColor" class="w-6 h-6 text-green-600">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-medium text-green-600 bg-green-50 px-2.5 py-1 rounded-full">
+                            +12% this month
+                        </span>
+                    </div>
+                    <h3 class="text-3xl md:text-4xl font-extrabold text-gray-800 tracking-tight">
+                        {{ info.report }}
+                    </h3>
+                    <p class="mt-1.5 text-gray-500 font-medium">Issues Reported</p>
+                </div>
             </div>
 
-            <div class="rounded-3xl border border-gray-100 bg-blue-50 p-8 text-center shadow-sm hover:shadow-md transition">
-                <h3 class="text-4xl font-extrabold text-blue-600">{{ info.resolved }}</h3>
-                <p class="mt-2 text-gray-700 font-medium">Issues Resolved</p>
+            <!-- Issues Resolved -->
+            <div class="group relative overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-indigo-500"></div>
+                <div class="p-7">
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke-width="1.8" stroke="currentColor" class="w-6 h-6 text-blue-600">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-medium text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">
+                            94% success rate
+                        </span>
+                    </div>
+                    <h3 class="text-3xl md:text-4xl font-extrabold text-gray-800 tracking-tight">
+                        {{ info.resolved }}
+                    </h3>
+                    <p class="mt-1.5 text-gray-500 font-medium">Issues Resolved</p>
+                </div>
             </div>
 
-            <div class="rounded-3xl border border-gray-100 bg-purple-50 p-8 text-center shadow-sm hover:shadow-md transition">
-                <h3 class="text-4xl font-extrabold text-purple-600">{{ info.total_users }}</h3>
-                <p class="mt-2 text-gray-700 font-medium">Community Members</p>
+            <!-- Community Members -->
+            <div class="group relative overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-violet-500"></div>
+                <div class="p-7">
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke-width="1.8" stroke="currentColor" class="w-6 h-6 text-purple-600">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-medium text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full">
+                            Growing daily
+                        </span>
+                    </div>
+                    <h3 class="text-3xl md:text-4xl font-extrabold text-gray-800 tracking-tight">
+                        {{ info.total_users }}
+                    </h3>
+                    <p class="mt-1.5 text-gray-500 font-medium">Community Members</p>
+                </div>
             </div>
 
         </div>
-
     </div>
 </section>
 

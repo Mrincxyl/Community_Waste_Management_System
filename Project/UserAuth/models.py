@@ -9,14 +9,16 @@ class customUser(AbstractUser):
     # You can add additional fields here if needed
     ROLE_CHOICES = (
         ('admin', 'Admin'),
-        ('user', 'User'),
+        ('public', 'Public'),
         ('municipality', 'Municipality'),
+        ('worker', 'Worker'),
+        
         
     )
     full_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20,unique=True)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES,default='user')
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES,default='public')
     
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
     address = models.TextField(blank=True, null=True)

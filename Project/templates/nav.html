@@ -1,7 +1,7 @@
 {% load static %}
 
-<nav class="fixed top-0 left-0 w-full z-[9999] bg-black/70 backdrop-blur-lg border-b border-white/10 overflow-visible">
-  <div class="w-full max-w-7xl mx-auto px-4 lg:px-6 py-3 flex items-center justify-between gap-4">
+<nav class="fixed top-0 left-0 w-full z-[999999] bg-black/70 backdrop-blur-lg border-b border-white/10 overflow-x-visible">
+  <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-3 flex-wrap xl:flex-nowrap">
 
     <!-- LOGO -->
     <a href="{% url 'home' %}" class="flex items-center gap-2 shrink-0">
@@ -15,54 +15,54 @@
     </a>
 
     <!-- SEARCH -->
-    <div class="hidden xl:flex flex-1 max-w-[260px]">
+    <div class="hidden xl:flex flex-1 max-w-[240px] min-w-0">
       {% include "searchbox.html" %}
     </div>
 
     <!-- DESKTOP MENU -->
-    <div class="hidden xl:flex items-center gap-3 text-white text-sm font-semibold whitespace-nowrap">
+    <div class="hidden xl:flex flex-1 items-center justify-end gap-1.5 lg:gap-2 text-white text-sm font-semibold whitespace-nowrap">
 
-      <a href="{% url 'home' %}" class="hover:text-green-300 transition">Home</a>
+      <a href="{% url 'home' %}" class="px-2.5 py-2 rounded-lg hover:bg-white/10 hover:text-green-300 transition">Home</a>
 
-      <a href="{% url 'find_collection' %}" class="hover:text-green-300 transition">
+      <a href="{% url 'find_collection' %}" class="px-2.5 py-2 rounded-lg hover:bg-white/10 hover:text-green-300 transition">
         Find Collection
       </a>
 
       {% if user.is_authenticated %}
 
-        <a href="{% url 'report_waste' %}" class="hover:text-green-300 transition">
+        <a href="{% url 'report_waste' %}" class="px-2.5 py-2 rounded-lg hover:bg-white/10 hover:text-green-300 transition">
           Report Waste
         </a>
 
-        <a href="{% url 'my_reports' %}" class="hover:text-green-300 transition">
+        <a href="{% url 'my_reports' %}" class="px-2.5 py-2 rounded-lg hover:bg-white/10 hover:text-green-300 transition">
           My Reports
         </a>
 
         {% if user.role == 'user' %}
           <a href="{% url 'apply_municipality' %}"
-             class="hover:text-blue-300 transition">
+             class="hidden 2xl:inline-flex px-2.5 py-2 rounded-lg hover:bg-white/10 hover:text-blue-300 transition">
             Apply as Municipality
           </a>
         {% endif %}
 
         {% if user.role == 'municipality' %}
           <a href="{% url 'municipality_dashboard' %}"
-             class="text-emerald-300 hover:text-emerald-200 transition">
+             class="hidden 2xl:inline-flex px-2.5 py-2 rounded-lg hover:bg-white/10 text-emerald-300 hover:text-emerald-200 transition">
             Municipality Dashboard
           </a>
         {% endif %}
 
         {% if user.is_superuser %}
-          <a href="/admin/" class="text-yellow-300 hover:text-yellow-200 transition">
+          <a href="/admin/" class="hidden 2xl:inline-flex px-2.5 py-2 rounded-lg hover:bg-white/10 text-yellow-300 hover:text-yellow-200 transition">
             Admin
           </a>
         {% endif %}
 
-            <div class="relative">
+      <div class="relative">
 
         <button
             id="notificationBtn"
-            class="relative p-2 rounded-lg hover:bg-white/10 transition duration-200">
+            class="relative p-2.5 rounded-lg hover:bg-white/10 transition duration-200">
 
             <!-- Bell Icon -->
             <svg xmlns="http://www.w3.org/2000/svg"
@@ -105,7 +105,7 @@
 
         {% include "notification_dropdown.html" %}
 
-        </div>
+      </div>
 
         <a href="{% url 'profile' %}" class="shrink-0">
           {% if user.profile_picture %}
@@ -119,16 +119,16 @@
         </a>
 
         <a href="{% url 'logout' %}"
-           class="px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-md hover:scale-105 transition shrink-0">
+           class="px-3 py-2 rounded-lg bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-md hover:scale-105 transition shrink-0">
           Logout
         </a>
 
       {% else %}
 
-        <a href="{% url 'login' %}" class="hover:text-green-300 transition">Login</a>
+        <a href="{% url 'login' %}" class="px-2.5 py-2 rounded-lg hover:bg-white/10 hover:text-green-300 transition">Login</a>
 
         <a href="{% url 'register' %}"
-           class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white shadow-md transition">
+           class="px-3 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white shadow-md transition">
           Sign Up
         </a>
 
