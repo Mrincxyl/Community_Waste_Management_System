@@ -1,25 +1,20 @@
-<!DOCTYPE html> 
-<html lang="en">  
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Community Waste Reporting System{% endblock title %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-
-
-</head> 
-<body class="bg-gray-50">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
 
     {% include "nav.html" %}
+    {% include "message.html" %}
 
-
-
-        {% include "message.html" %}
-
+    <main class="min-h-[calc(100vh-4rem)] pt-20">
         {% block content %}
         {% endblock %}
-
-    
+    </main>
 
     {% include "helpdesk.html" %}
     {% include "footer.html" %}

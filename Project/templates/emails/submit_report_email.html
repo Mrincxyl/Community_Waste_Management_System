@@ -11,7 +11,7 @@ Waste Report Submitted Successfully
 </h2>
 
 <p style="font-size:16px;color:#555;line-height:1.8;">
-    Thank you for helping keep our community clean! 🎉
+    Thank you for helping keep our community clean.
 </p>
 
 <p style="font-size:16px;color:#555;line-height:1.8;">
@@ -27,33 +27,33 @@ Waste Report Submitted Successfully
 ">
 
 <h3 style="margin-top:0;color:#065F46;">
-✅ Report Details
+Report Details
 </h3>
 
 <table>
 
 <tr>
-    <td class="label">📝 Report Title</td>
+    <td class="label">Report Title</td>
     <td>{{ report.title }}</td>
 </tr>
 
 <tr>
-    <td class="label">♻ Waste Type</td>
+    <td class="label">Waste Type</td>
     <td>{{ report.get_waste_type_display }}</td>
 </tr>
 
 <tr>
-    <td class="label">🚨 Priority</td>
+    <td class="label">Priority</td>
     <td>{{ report.get_urgency_level_display }}</td>
 </tr>
 
 <tr>
-    <td class="label">📍 Landmark</td>
+    <td class="label">Landmark</td>
     <td>{{ report.landmark|default:"Not Provided" }}</td>
 </tr>
 
 <tr>
-    <td class="label">📌 Current Status</td>
+    <td class="label">Current Status</td>
     <td>
         <span class="status">
             {{ report.get_status_display }}
@@ -62,7 +62,7 @@ Waste Report Submitted Successfully
 </tr>
 
 <tr>
-    <td class="label">📅 Submitted On</td>
+    <td class="label">Submitted On</td>
     <td>{{ report.created_at|date:"d M Y, h:i A" }}</td>
 </tr>
 
@@ -79,7 +79,7 @@ margin:30px 0;
 ">
 
 <h3 style="margin-top:0;">
-📋 What Happens Next?
+What Happens Next?
 </h3>
 
 <ol style="line-height:2;color:#555;padding-left:20px;">
@@ -109,7 +109,7 @@ View My Reports
 </p>
 
 <p style="margin-top:40px;color:#555;">
-Thank you for contributing to a cleaner, healthier, and more sustainable community. 🌱
+Thank you for contributing to a cleaner, healthier, and more sustainable community.
 </p>
 
 {% endblock %}

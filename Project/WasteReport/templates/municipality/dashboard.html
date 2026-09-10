@@ -1,0 +1,514 @@
+{% extends "municipality/base_municipality.html" %}
+
+{% block title %}
+Municipality Dashboard
+{% endblock %}
+
+{% block content %}
+
+<section class="min-h-screen bg-slate-50 px-4 py-10">
+
+    <div class="max-w-7xl mx-auto space-y-8">
+
+        <!-- ================================================= -->
+        <!-- HEADER -->
+        <!-- ================================================= -->
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+
+            <div>
+                <p class="text-teal-700 font-medium uppercase tracking-wider text-xs">
+                    Municipality Portal
+                </p>
+                <h1 class="mt-1.5 text-3xl font-semibold text-slate-900 tracking-tight">
+                    Welcome back
+                </h1>
+                <p class="mt-1 text-base text-slate-600">
+                    {{ municipality.organization_name }}
+                </p>
+                <p class="text-sm text-slate-500 mt-0.5">
+                    Waste management overview for today
+                </p>
+            </div>
+
+            <!-- Municipality Profile + Details -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 w-full lg:w-96">
+                <div class="flex items-center gap-4 mb-4">
+                    {% if municipality.profile_picture %}
+                        <img src="{{ municipality.profile_picture.url }}"
+                             alt="{{ municipality.organization_name }}"
+                             class="w-14 h-14 rounded-full object-cover ring-2 ring-white shadow-sm">
+                    {% else %}
+                        <div class="w-14 h-14 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-xl font-semibold ring-2 ring-white shadow-sm">
+                            {{ municipality.organization_name|first|upper }}
+                        </div>
+                    {% endif %}
+
+                    <div>
+                        <h3 class="text-sm font-semibold text-slate-900">
+                            {{ municipality.organization_name }}
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-0.5">
+                            Municipality Profile
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5 text-sm border-t border-slate-100 pt-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-500">State</span>
+                        <span class="font-medium text-slate-800">{{ municipality.state }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-500">District</span>
+                        <span class="font-medium text-slate-800">{{ municipality.district }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-500">City</span>
+                        <span class="font-medium text-slate-800">{{ municipality.city }}</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-1">
+                        <span class="text-slate-500">Status</span>
+                        <span class="inline-flex items-center rounded-full bg-teal-50 px-2.5 py-0.5 text-xs font-medium text-teal-700 ring-1 ring-inset ring-teal-600/20">
+                            {{ municipality.status|title }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================= -->
+        <!-- STATISTICS -->
+        <!-- ================================================= -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+            <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                <p class="text-sm font-medium text-slate-500">Total Reports</p>
+                <p class="mt-1.5 text-3xl font-semibold text-slate-900">{{ reports|length }}</p>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                <p class="text-sm font-medium text-rose-600">Pending</p>
+                <p class="mt-1.5 text-3xl font-semibold text-rose-700">{{ pending }}</p>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                <p class="text-sm font-medium text-blue-600">In Progress</p>
+                <p class="mt-1.5 text-3xl font-semibold text-blue-700">{{ in_progress }}</p>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                <p class="text-sm font-medium text-teal-700">Resolved</p>
+                <p class="mt-1.5 text-3xl font-semibold text-teal-800">{{ resolved }}</p>
+            </div>
+
+        </div>
+
+        <!-- ================================================= -->
+        <!-- QUICK ACTIONS -->
+        <!-- ================================================= -->
+        <div>
+            <h2 class="text-base font-semibold text-slate-900 mb-3">Quick Actions</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                <a href="{% url 'worker_list' %}"
+                   class="group flex items-start gap-4 bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:border-teal-300 hover:shadow-md transition">
+                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-teal-50 text-teal-700">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-slate-900 group-hover:text-teal-700 transition">Manage Workers</h3>
+                        <p class="mt-0.5 text-sm text-slate-500">View & manage staff</p>
+                    </div>
+                </a>
+
+                <a href="{% url 'municipality_reports' %}"
+                   class="group flex items-start gap-4 bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:border-teal-300 hover:shadow-md transition">
+                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 12h6m-6 4h6M7 5h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-slate-900 group-hover:text-teal-700 transition">All Reports</h3>
+                        <p class="mt-0.5 text-sm text-slate-500">Full report listing</p>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+        <!-- ================================================= -->
+        <!-- STATUS SECTIONS -->
+        <!-- ================================================= -->
+        <div class="space-y-4">
+
+            <!-- ==================== PENDING ==================== -->
+            <details class="group bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden" open>
+                <summary class="list-none cursor-pointer px-5 py-4 bg-slate-50/80 hover:bg-slate-50 transition">
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-rose-100 text-rose-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-base font-semibold text-slate-900">Pending Reports</h2>
+                                <p class="text-sm text-slate-500">Awaiting municipal action</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-medium text-rose-700 ring-1 ring-inset ring-rose-600/20">{{ pending }}</span>
+                            <span class="text-slate-400 transition group-open:rotate-180">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </summary>
+
+                <div class="p-5 border-t border-slate-100">
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        {% for report in pending_reports %}
+                            <div class="relative bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition overflow-hidden">
+                                <div class="absolute top-0 left-0 right-0 h-1 bg-rose-500"></div>
+
+                                <p class="text-xs font-semibold uppercase tracking-wider text-rose-600">
+                                    {{ report.get_waste_type_display }}
+                                </p>
+                                <div class="mt-2 flex items-center justify-between gap-2">
+                                    <h3 class="text-base font-semibold text-slate-900 line-clamp-1">{{ report.title }}</h3>
+                                    {% if report.assigned_worker %}
+                                        <span class="inline-flex items-center rounded-full bg-teal-50 px-2 py-0.5 text-[10px] font-medium text-teal-700 ring-1 ring-inset ring-teal-600/20">Assigned</span>
+                                    {% else %}
+                                        <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">Unassigned</span>
+                                    {% endif %}
+                                </div>
+                                <p class="mt-2 text-sm text-slate-500 line-clamp-2">{{ report.description }}</p>
+
+                                <div class="mt-4 space-y-1.5 text-xs">
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Citizen</span>
+                                        <span class="font-medium text-slate-700">{{ report.user.get_username }}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Location</span>
+                                        <span class="font-medium text-slate-700 max-w-[140px] truncate">{{ report.landmark|default:"Not provided" }}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Submitted</span>
+                                        <span class="text-slate-600">{{ report.created_at|date:"d M Y" }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    {% if report.urgency_level == "high" %}
+                                        <span class="inline-flex items-center rounded-full bg-rose-50 px-2.5 py-0.5 text-xs font-medium text-rose-700">High Priority</span>
+                                    {% elif report.urgency_level == "medium" %}
+                                        <span class="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700">Medium Priority</span>
+                                    {% else %}
+                                        <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">Low Priority</span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mt-4 flex gap-2">
+                                    <a href="{% url 'update_report' report.id %}"
+                                       class="flex-1 text-center rounded-lg bg-rose-600 px-3 py-2 text-xs font-medium text-white hover:bg-rose-700 transition">
+                                        Review
+                                    </a>
+                                    {% if report.image %}
+                                        <a href="{{ report.image.url }}" target="_blank"
+                                           class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 transition">
+                                            Image
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p class="col-span-full text-center py-10 text-sm text-slate-400">No pending reports.</p>
+                        {% endfor %}
+                    </div>
+
+                    {% if pending_reports.paginator.num_pages > 1 %}
+                    <div class="mt-6 flex items-center justify-center gap-2">
+                        {% if pending_reports.has_previous %}
+                            <a href="?pending_page={{ pending_reports.previous_page_number }}"
+                               class="px-3.5 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition">
+                                Previous
+                            </a>
+                        {% endif %}
+                        <span class="px-3.5 py-2 rounded-lg bg-slate-800 text-white text-sm font-medium">
+                            {{ pending_reports.number }} / {{ pending_reports.paginator.num_pages }}
+                        </span>
+                        {% if pending_reports.has_next %}
+                            <a href="?pending_page={{ pending_reports.next_page_number }}"
+                               class="px-3.5 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition">
+                                Next
+                            </a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </details>
+
+            <!-- ==================== IN PROGRESS ==================== -->
+            <details class="group bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <summary class="list-none cursor-pointer px-5 py-4 bg-slate-50/80 hover:bg-slate-50 transition">
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100 text-blue-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-base font-semibold text-slate-900">In Progress</h2>
+                                <p class="text-sm text-slate-500">Currently being handled</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/20">{{ in_progress }}</span>
+                            <span class="text-slate-400 transition group-open:rotate-180">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </summary>
+
+                <div class="p-5 border-t border-slate-100">
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        {% for report in in_progress_reports %}
+                            <div class="relative bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition overflow-hidden">
+                                <div class="absolute top-0 left-0 right-0 h-1 bg-blue-500"></div>
+
+                                <p class="text-xs font-semibold uppercase tracking-wider text-blue-600">{{ report.get_waste_type_display }}</p>
+                                <h3 class="mt-1.5 text-base font-semibold text-slate-900 line-clamp-1">{{ report.title }}</h3>
+                                <p class="mt-2 text-sm text-slate-500 line-clamp-2">{{ report.description }}</p>
+
+                                <div class="mt-4 space-y-1.5 text-xs">
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Citizen</span>
+                                        <span class="font-medium text-slate-700">{{ report.user.get_username }}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Location</span>
+                                        <span class="font-medium text-slate-700 max-w-[140px] truncate">{{ report.landmark|default:"Not provided" }}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Updated</span>
+                                        <span class="text-slate-600">{{ report.updated_at|date:"d M Y" }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 flex gap-2">
+                                    <a href="{% url 'update_report' report.id %}"
+                                       class="flex-1 text-center rounded-lg bg-blue-600 px-3 py-2 text-xs font-medium text-white hover:bg-blue-700 transition">
+                                        Update Status
+                                    </a>
+                                    {% if report.image %}
+                                        <a href="{{ report.image.url }}" target="_blank"
+                                           class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 transition">
+                                            Image
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p class="col-span-full text-center py-10 text-sm text-slate-400">No reports in progress.</p>
+                        {% endfor %}
+                    </div>
+
+                    {% if in_progress_reports.paginator.num_pages > 1 %}
+                    <div class="mt-6 flex items-center justify-center gap-2">
+                        {% if in_progress_reports.has_previous %}
+                            <a href="?in_progress_page={{ in_progress_reports.previous_page_number }}"
+                               class="px-3.5 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition">Previous</a>
+                        {% endif %}
+                        <span class="px-3.5 py-2 rounded-lg bg-slate-800 text-white text-sm font-medium">
+                            {{ in_progress_reports.number }} / {{ in_progress_reports.paginator.num_pages }}
+                        </span>
+                        {% if in_progress_reports.has_next %}
+                            <a href="?in_progress_page={{ in_progress_reports.next_page_number }}"
+                               class="px-3.5 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition">Next</a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </details>
+
+            <!-- ==================== RESOLVED ==================== -->
+            <details class="group bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <summary class="list-none cursor-pointer px-5 py-4 bg-slate-50/80 hover:bg-slate-50 transition">
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-100 text-teal-700">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-base font-semibold text-slate-900">Resolved Reports</h2>
+                                <p class="text-sm text-slate-500">Successfully completed</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="rounded-full bg-teal-50 px-2.5 py-1 text-xs font-medium text-teal-700 ring-1 ring-inset ring-teal-600/20">{{ resolved }}</span>
+                            <span class="text-slate-400 transition group-open:rotate-180">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </summary>
+
+                <div class="p-5 border-t border-slate-100">
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        {% for report in resolved_reports %}
+                            <div class="relative bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition overflow-hidden">
+                                <div class="absolute top-0 left-0 right-0 h-1 bg-teal-500"></div>
+
+                                <p class="text-xs font-semibold uppercase tracking-wider text-teal-700">{{ report.get_waste_type_display }}</p>
+                                <h3 class="mt-1.5 text-base font-semibold text-slate-900 line-clamp-1">{{ report.title }}</h3>
+                                <p class="mt-2 text-sm text-slate-500 line-clamp-2">{{ report.description }}</p>
+
+                                <div class="mt-4 space-y-1.5 text-xs">
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Citizen</span>
+                                        <span class="font-medium text-slate-700">{{ report.user.get_username }}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Location</span>
+                                        <span class="font-medium text-slate-700 max-w-[140px] truncate">{{ report.landmark|default:"Not provided" }}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Resolved</span>
+                                        <span class="text-slate-600">{{ report.updated_at|date:"d M Y" }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 flex gap-2">
+                                    <a href="{% url 'update_report' report.id %}"
+                                       class="flex-1 text-center rounded-lg bg-teal-700 px-3 py-2 text-xs font-medium text-white hover:bg-teal-800 transition">
+                                        View Report
+                                    </a>
+                                    {% if report.image %}
+                                        <a href="{{ report.image.url }}" target="_blank"
+                                           class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 transition">
+                                            Image
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p class="col-span-full text-center py-10 text-sm text-slate-400">No resolved reports.</p>
+                        {% endfor %}
+                    </div>
+
+                    {% if resolved_reports.paginator.num_pages > 1 %}
+                    <div class="mt-6 flex items-center justify-center gap-2">
+                        {% if resolved_reports.has_previous %}
+                            <a href="?resolved_page={{ resolved_reports.previous_page_number }}"
+                               class="px-3.5 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition">Previous</a>
+                        {% endif %}
+                        <span class="px-3.5 py-2 rounded-lg bg-slate-800 text-white text-sm font-medium">
+                            {{ resolved_reports.number }} / {{ resolved_reports.paginator.num_pages }}
+                        </span>
+                        {% if resolved_reports.has_next %}
+                            <a href="?resolved_page={{ resolved_reports.next_page_number }}"
+                               class="px-3.5 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition">Next</a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </details>
+
+            <!-- ==================== REJECTED ==================== -->
+            <details class="group bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <summary class="list-none cursor-pointer px-5 py-4 bg-slate-50/80 hover:bg-slate-50 transition">
+                    <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-200 text-slate-600">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-base font-semibold text-slate-900">Rejected Reports</h2>
+                                <p class="text-sm text-slate-500">Reports that were rejected</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">{{ rejected }}</span>
+                            <span class="text-slate-400 transition group-open:rotate-180">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </summary>
+
+                <div class="p-5 border-t border-slate-100">
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        {% for report in rejected_reports %}
+                            <div class="relative bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition overflow-hidden">
+                                <div class="absolute top-0 left-0 right-0 h-1 bg-slate-400"></div>
+
+                                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{{ report.get_waste_type_display }}</p>
+                                <h3 class="mt-1.5 text-base font-semibold text-slate-900 line-clamp-1">{{ report.title }}</h3>
+                                <p class="mt-2 text-sm text-slate-500 line-clamp-2">{{ report.description }}</p>
+
+                                <div class="mt-4 space-y-1.5 text-xs">
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Citizen</span>
+                                        <span class="font-medium text-slate-700">{{ report.user.get_username }}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-slate-400">Date</span>
+                                        <span class="text-slate-600">{{ report.updated_at|date:"d M Y" }}</span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <a href="{% url 'update_report' report.id %}"
+                                       class="block text-center rounded-lg bg-slate-800 px-3 py-2 text-xs font-medium text-white hover:bg-slate-900 transition">
+                                        View Report
+                                    </a>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p class="col-span-full text-center py-10 text-sm text-slate-400">No rejected reports.</p>
+                        {% endfor %}
+                    </div>
+
+                    {% if rejected_reports.paginator.num_pages > 1 %}
+                    <div class="mt-6 flex items-center justify-center gap-2">
+                        {% if rejected_reports.has_previous %}
+                            <a href="?rejected_page={{ rejected_reports.previous_page_number }}"
+                               class="px-3.5 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition">Previous</a>
+                        {% endif %}
+                        <span class="px-3.5 py-2 rounded-lg bg-slate-800 text-white text-sm font-medium">
+                            {{ rejected_reports.number }} / {{ rejected_reports.paginator.num_pages }}
+                        </span>
+                        {% if rejected_reports.has_next %}
+                            <a href="?rejected_page={{ rejected_reports.next_page_number }}"
+                               class="px-3.5 py-2 rounded-lg border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 transition">Next</a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </details>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

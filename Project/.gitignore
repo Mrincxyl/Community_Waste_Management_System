@@ -10,6 +10,8 @@ env/
 
 # Environment Variables
 .env
+.env.*
+!.env.example
 
 # Django
 db.sqlite3
@@ -17,6 +19,10 @@ media/
 
 # Static files (if collected)
 staticfiles/
+
+# Local secrets
+*.pem
+*.key
 
 # VS Code
 .vscode/

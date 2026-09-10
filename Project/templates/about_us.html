@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+About Us | Community Waste Reporting System
+{% endblock title %}
+
+{% block content %}
+
+<style>
+    .reveal {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+</style>
+
+<!-- ================= HERO ================= -->
+<section class="relative pt-28 pb-20 overflow-hidden bg-slate-950 text-white">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.22),_transparent_35%),radial-gradient(circle_at_bottom_right,_rgba(59,130,246,0.18),_transparent_30%)]"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(135deg,rgba(15,23,42,0.96),rgba(9,18,31,0.85))]"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-center">
+            <div class="max-w-3xl reveal show">
+                <p class="text-sm font-semibold text-emerald-300 uppercase tracking-[0.24em]">About WasteTracker</p>
+                <h1 class="mt-5 text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.05]">
+                    Cleaner communities start with better waste reporting.
+                </h1>
+                <p class="mt-6 text-lg text-slate-300 leading-relaxed">
+                    WasteTracker helps citizens report local waste issues with precision and visibility, while enabling municipal teams to respond faster, assign work efficiently, and monitor resolution transparently.
+                </p>
+
+                <div class="mt-8 flex flex-wrap gap-4">
+                    <a href="{% url 'report_waste' %}" class="inline-flex items-center justify-center rounded-xl bg-emerald-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-400 transition">
+                        Report Waste
+                    </a>
+                    <a href="{% url 'register' %}" class="inline-flex items-center justify-center rounded-xl border border-slate-600 bg-slate-800/60 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-700 transition">
+                        Join the Community
+                    </a>
+                </div>
+            </div>
+
+            <div class="reveal reveal-delay-2">
+                <div class="rounded-[28px] border border-slate-700 bg-slate-900/60 p-5 shadow-2xl shadow-black/20 backdrop-blur-sm">
+                    <img
+                        src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80"
+                        alt="Waste management team"
+                        class="h-[430px] w-full rounded-[22px] object-cover"
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= MAIN CONTENT ================= -->
+<section class="pb-24 bg-slate-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Stats -->
+        <div class="relative -mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="reveal reveal-delay-1 bg-white rounded-2xl border border-slate-200 shadow-[0_10px_30px_rgba(15,23,42,0.05)] p-5 text-center">
+                <p class="text-2xl font-bold text-slate-900">Feb 2026</p>
+                <p class="mt-1 text-sm text-slate-500">Development began</p>
+            </div>
+            <div class="reveal reveal-delay-2 bg-white rounded-2xl border border-slate-200 shadow-[0_10px_30px_rgba(15,23,42,0.05)] p-5 text-center">
+                <p class="text-2xl font-bold text-slate-900">3 Roles</p>
+                <p class="mt-1 text-sm text-slate-500">Citizen, Officer, Worker</p>
+            </div>
+            <div class="reveal reveal-delay-3 bg-white rounded-2xl border border-slate-200 shadow-[0_10px_30px_rgba(15,23,42,0.05)] p-5 text-center">
+                <p class="text-2xl font-bold text-slate-900">Photo + Map</p>
+                <p class="mt-1 text-sm text-slate-500">Faster, clearer reports</p>
+            </div>
+            <div class="reveal bg-white rounded-2xl border border-slate-200 shadow-[0_10px_30px_rgba(15,23,42,0.05)] p-5 text-center">
+                <p class="text-2xl font-bold text-slate-900">Full Cycle</p>
+                <p class="mt-1 text-sm text-slate-500">From report to resolution</p>
+            </div>
+        </div>
+
+        <!-- Story + How it works -->
+        <div class="mt-16 grid lg:grid-cols-12 gap-8">
+
+            <div class="lg:col-span-7 reveal">
+                <div class="bg-white rounded-[28px] border border-slate-200 shadow-[0_18px_50px_rgba(15,23,42,0.06)] p-8 h-full">
+                    <p class="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">The challenge</p>
+                    <h2 class="mt-4 text-3xl font-bold text-slate-900">The problem we wanted to solve</h2>
+                    <div class="mt-5 space-y-4 text-slate-600 leading-relaxed">
+                        <p>
+                            In many areas, waste collects on roadsides, near markets, and in open spaces. Residents see it every day, but reporting it is often inconvenient and the aftermath is rarely visible.
+                        </p>
+                        <p>
+                            We began this project in February 2026 as part of a Django internship. Rather than building a basic practice app, we chose a real operational problem: how to make waste reporting easy for the public and more manageable for the teams responsible for cleanup.
+                        </p>
+                        <p>
+                            WasteTracker is our way of closing that gap — giving citizens a simple way to submit issues, and giving officers and workers a structured path to review, assign, and close problems with accountability.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-5 reveal reveal-delay-2">
+                <div class="bg-white rounded-[28px] border border-slate-200 shadow-[0_18px_50px_rgba(15,23,42,0.06)] p-8 h-full">
+                    <p class="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-700">Workflow</p>
+                    <h2 class="mt-4 text-3xl font-bold text-slate-900">How the process works</h2>
+
+                    <div class="mt-7 space-y-5">
+                        <div class="flex gap-4">
+                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 font-bold text-lg">1</div>
+                            <div>
+                                <p class="font-semibold text-slate-900">A resident submits a report</p>
+                                <p class="mt-1 text-sm text-slate-500">With a photo, location, and the details of the issue.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 font-bold text-lg">2</div>
+                            <div>
+                                <p class="font-semibold text-slate-900">An officer reviews it</p>
+                                <p class="mt-1 text-sm text-slate-500">Confirms the details and assigns the job to a field worker.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 font-bold text-lg">3</div>
+                            <div>
+                                <p class="font-semibold text-slate-900">The worker completes the task</p>
+                                <p class="mt-1 text-sm text-slate-500">Status is updated until the issue is recorded as resolved.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mission strip -->
+        <div class="mt-8 grid md:grid-cols-3 gap-4">
+            <div class="reveal rounded-[24px] bg-slate-900 p-6 text-white shadow-[0_20px_50px_rgba(15,23,42,0.12)]">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">Mission</p>
+                <p class="mt-3 text-slate-200 leading-relaxed">
+                    Make local waste issues easier to report, easier to track, and easier to resolve.
+                </p>
+            </div>
+            <div class="reveal reveal-delay-1 rounded-[24px] bg-white border border-slate-200 p-6 shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Vision</p>
+                <p class="mt-3 text-slate-600 leading-relaxed">
+                    Communities where public reporting and municipal response work as one transparent process.
+                </p>
+            </div>
+            <div class="reveal reveal-delay-2 rounded-[24px] bg-white border border-slate-200 p-6 shadow-[0_10px_30px_rgba(15,23,42,0.05)]">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">Approach</p>
+                <p class="mt-3 text-slate-600 leading-relaxed">
+                    Keep the product practical with clear roles, low-friction reporting, and visible progress at every step.
+                </p>
+            </div>
+        </div>
+
+        <!-- Team -->
+        <div class="mt-20">
+            <div class="mb-8 reveal text-center">
+                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">The team</p>
+                <h2 class="mt-3 text-3xl font-bold text-slate-900">Who built it</h2>
+                <p class="mt-3 text-slate-500 max-w-2xl mx-auto">A small team focused on turning a real civic problem into a working, practical product.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+
+                <div class="reveal bg-white rounded-[28px] border border-slate-200 shadow-[0_15px_40px_rgba(15,23,42,0.06)] overflow-hidden hover:shadow-lg transition">
+                    <div class="p-7">
+                        <div class="flex items-center gap-5">
+                            <img src="{% static 'images/team/raihan.jpg' %}"
+                                 alt="SK Raihan Ali"
+                                 class="w-20 h-20 rounded-2xl object-cover bg-slate-100 ring-1 ring-slate-200"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="w-20 h-20 rounded-2xl bg-slate-200 text-slate-600 hidden items-center justify-center text-2xl font-semibold">R</div>
+
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900">SK Raihan Ali</h3>
+                                <p class="text-sm text-emerald-700 font-medium">Full-Stack Developer · Team Lead</p>
+                                <div class="mt-2 flex gap-4 text-sm">
+                                    <a href="https://www.linkedin.com/in/raihanxsk/" target="_blank" rel="noopener" class="text-slate-500 hover:text-emerald-700">LinkedIn</a>
+                                    <a href="https://github.com/Mrincxyl" target="_blank" rel="noopener" class="text-slate-500 hover:text-emerald-700">GitHub</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="mt-5 text-sm text-slate-600 leading-relaxed">
+                            Leads product and engineering. He designed and implemented the core system — backend architecture, authentication, dashboards, assignment workflow, maps, notifications, and the overall user experience.
+                        </p>
+
+                        <div class="mt-5 flex flex-wrap gap-2">
+                            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">Django</span>
+                            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">Tailwind CSS</span>
+                            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">System Design</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal reveal-delay-2 bg-white rounded-[28px] border border-slate-200 shadow-[0_15px_40px_rgba(15,23,42,0.06)] overflow-hidden hover:shadow-lg transition">
+                    <div class="p-7">
+                        <div class="flex items-center gap-5">
+                            <img src="{% static 'images/team/mahabir.jpg' %}"
+                                 alt="Mahabir Paul"
+                                 class="w-20 h-20 rounded-2xl object-cover bg-slate-100 ring-1 ring-slate-200"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="w-20 h-20 rounded-2xl bg-slate-200 text-slate-600 hidden items-center justify-center text-2xl font-semibold">M</div>
+
+                            <div>
+                                <h3 class="text-lg font-semibold text-slate-900">Mahabir Paul</h3>
+                                <p class="text-sm text-emerald-700 font-medium">Machine Learning Engineer</p>
+                                <div class="mt-2 flex gap-4 text-sm">
+                                    <a href="https://www.linkedin.com/in/mahabir-paul/" target="_blank" rel="noopener" class="text-slate-500 hover:text-emerald-700">LinkedIn</a>
+                                    <a href="https://github.com/mahabir163" target="_blank" rel="noopener" class="text-slate-500 hover:text-emerald-700">GitHub</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="mt-5 text-sm text-slate-600 leading-relaxed">
+                            Focuses on the computer vision side of the project — preparing datasets, training detection models, evaluating results, and integrating AI-assisted waste recognition into the reporting flow.
+                        </p>
+
+                        <div class="mt-5 flex flex-wrap gap-2">
+                            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">OpenCV</span>
+                            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">Machine Learning</span>
+                            <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">Computer Vision</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Tech -->
+        <div class="mt-20">
+            <div class="mb-8 reveal text-center">
+                <p class="text-xs font-semibold uppercase tracking-[0.24em] text-emerald-700">Technology</p>
+                <h2 class="mt-3 text-3xl font-bold text-slate-900">Built with a practical stack</h2>
+                <p class="mt-3 text-slate-500 max-w-2xl mx-auto">A focused set of tools chosen for speed, reliability, and real-world usability.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="reveal bg-white rounded-2xl border border-slate-200 p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-medium">Language</p>
+                    <p class="mt-2 font-semibold text-slate-800">Python</p>
+                </div>
+                <div class="reveal reveal-delay-1 bg-white rounded-2xl border border-slate-200 p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-medium">Backend</p>
+                    <p class="mt-2 font-semibold text-slate-800">Django</p>
+                </div>
+                <div class="reveal reveal-delay-2 bg-white rounded-2xl border border-slate-200 p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-medium">Frontend</p>
+                    <p class="mt-2 font-semibold text-slate-800">Tailwind CSS</p>
+                </div>
+                <div class="reveal bg-white rounded-2xl border border-slate-200 p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-medium">Database</p>
+                    <p class="mt-2 font-semibold text-slate-800">SQLite</p>
+                </div>
+                <div class="reveal reveal-delay-1 bg-white rounded-2xl border border-slate-200 p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-medium">Vision / ML</p>
+                    <p class="mt-2 font-semibold text-slate-800">OpenCV · Pillow</p>
+                </div>
+                <div class="reveal reveal-delay-2 bg-white rounded-2xl border border-slate-200 p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)]">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-medium">Version Control</p>
+                    <p class="mt-2 font-semibold text-slate-800">Git · GitHub</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="mt-20 reveal overflow-hidden rounded-2xl bg-slate-900">
+            <div class="px-8 py-12 md:px-12 md:py-14 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div class="max-w-xl">
+                    <h2 class="text-2xl font-semibold text-white">See an issue in your area?</h2>
+                    <p class="mt-3 text-slate-300">
+                        Submit a report with a photo and location. Municipal teams can review it, assign it, and update progress until it’s resolved.
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+                    <a href="{% url 'report_waste' %}"
+                       class="inline-flex items-center justify-center rounded-lg bg-teal-600 px-6 py-3 text-sm font-medium text-white hover:bg-teal-700 transition">
+                        Report Waste Issue
+                    </a>
+                    <a href="{% url 'register' %}"
+                       class="inline-flex items-center justify-center rounded-lg border border-slate-600 px-6 py-3 text-sm font-medium text-slate-200 hover:bg-slate-800 transition">
+                        Create Account
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const reveals = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("show");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.15
+    });
+
+    reveals.forEach((el) => observer.observe(el));
+});
+</script>
+
+{% endblock content %}

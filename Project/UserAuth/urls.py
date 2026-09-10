@@ -29,4 +29,11 @@ urlpatterns = [
     
     path("profile/",views.ProfileView, name="profile"),
     path("profile/edit/",views.EditProfileView, name="edit_profile"),
+    
+    
+    path(
+    "worker/login/",
+    views.worker_login,
+    name="worker_login",
+),
 ]

@@ -75,5 +75,53 @@ def send_municipality_applied_email(municipality):
     
     email.send()
     
+
+
+def send_officer_registration_email(user):
+    subject = "Municipality Officer Registration Submitted"
+
+    html_content = render_to_string(
+        "emails/officer_registration_email.html",
+        {
+            "user": user,
+        }
+    )
+
+    email = EmailMultiAlternatives(
+        subject=subject,
+        body="Your Municipality Officer registration has been submitted successfully.",
+        from_email=settings.EMAIL_HOST_USER,
+        to=[user.email],
+    )
+
+    email.attach_alternative(html_content, "text/html")
+
+    email.send()    
+   
+   
+   
+def send_officer_approved_email(user):
+    print("===== APPROVAL EMAIL FUNCTION CALLED =====")
+
+    subject = "Municipality Officer Registration Approved"
+
+    html_content = render_to_string(
+        "emails/officer_approved_email.html",
+        {
+            "user": user,
+        }
+    )
+
+    email = EmailMultiAlternatives(
+        subject=subject,
+        body="Your Municipality Officer account has been approved.",
+        from_email=settings.EMAIL_HOST_USER,
+        to=[user.email],
+    )
+
+    email.attach_alternative(html_content, "text/html")
+    email.send()
+
+    print("===== EMAIL SENT =====")   
     
     

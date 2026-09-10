@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}
+Municipality Officer Login | Community Waste Reporting System
+{% endblock %}
+
+{% block content %}
+
+<section class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center py-12 px-4">
+
+    <div class="w-full max-w-md">
+
+        <!-- Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+
+            <!-- Header -->
+            <div class="text-center pt-8 px-8">
+                <div class="w-14 h-14 mx-auto rounded-2xl bg-green-100 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                         stroke-width="1.8" stroke="currentColor" class="w-7 h-7 text-green-600">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/>
+                    </svg>
+                </div>
+
+                <h1 class="mt-5 text-2xl font-bold text-gray-800">
+                    Municipality Officer Login
+                </h1>
+                <p class="mt-2 text-sm text-gray-500">
+                    Sign in to access your municipality dashboard
+                </p>
+            </div>
+
+            <!-- Form -->
+            <form method="POST" class="p-8 pt-6">
+                {% csrf_token %}
+
+                <div class="space-y-5">
+
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                            Email Address
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.8" stroke="currentColor" class="w-5 h-5 text-gray-400">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+                                </svg>
+                            </div>
+                            <input
+                                type="email"
+                                name="email"
+                                required
+                                placeholder="official@example.gov.in"
+                                class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none transition text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                            Password
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.8" stroke="currentColor" class="w-5 h-5 text-gray-400">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+                                </svg>
+                            </div>
+                            <input
+                                type="password"
+                                name="password"
+                                required
+                                placeholder="Enter your password"
+                                class="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none transition text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Remember + Forgot -->
+                    <div class="flex items-center justify-between text-sm">
+                        <label class="flex items-center gap-2 text-gray-600 cursor-pointer">
+                            <input type="checkbox" name="remember" class="rounded border-gray-300 text-green-600 focus:ring-green-500">
+                            Remember me
+                        </label>
+                        <a href="{% url 'forget_password' %}" class="text-green-600 font-medium hover:text-green-700">
+                            Forgot password?
+                        </a>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button
+                        type="submit"
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3.5 rounded-xl transition duration-300 shadow-sm hover:shadow-md flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
+                        </svg>
+                        Login
+                    </button>
+
+                </div>
+            </form>
+
+            <!-- Footer -->
+            <div class="px-8 pb-8 text-center">
+                <p class="text-sm text-gray-500">
+                    Don’t have an account?
+                    <a href="{% url 'officer_register' %}" class="text-green-600 font-semibold hover:text-green-700">
+                        Register here
+                    </a>
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Back to home -->
+        <p class="mt-6 text-center">
+            <a href="{% url 'home' %}" class="text-sm text-gray-500 hover:text-gray-700 flex items-center justify-center gap-1.5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+                </svg>
+                Back to Home
+            </a>
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}

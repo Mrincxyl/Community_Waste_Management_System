@@ -28,7 +28,7 @@ Find Waste Collection | WasteTracker
     <button
       onclick="getLocation()"
       class="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 shadow-md transition">
-      📍 Detect My Location
+      Detect My Location
     </button>
   </div>
 </section>
@@ -59,19 +59,19 @@ Find Waste Collection | WasteTracker
     <div class="grid md:grid-cols-3 gap-6">
 
       <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition">
-        <h3 class="font-semibold text-gray-900">📍 Park Street Bin</h3>
+        <h3 class="font-semibold text-gray-900">Park Street Bin</h3>
         <p class="text-sm text-gray-600 mt-3">Distance: 350 meters</p>
         <p class="text-sm text-gray-600">Open: 6AM – 9PM</p>
       </div>
 
       <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition">
-        <h3 class="font-semibold text-gray-900">📍 Salt Lake Bin</h3>
+        <h3 class="font-semibold text-gray-900">Salt Lake Bin</h3>
         <p class="text-sm text-gray-600 mt-3">Distance: 700 meters</p>
         <p class="text-sm text-gray-600">Open: 24 Hours</p>
       </div>
 
       <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition">
-        <h3 class="font-semibold text-gray-900">📍 New Town Collection</h3>
+        <h3 class="font-semibold text-gray-900">New Town Collection</h3>
         <p class="text-sm text-gray-600 mt-3">Distance: 1.2 km</p>
         <p class="text-sm text-gray-600">Open: 7AM – 8PM</p>
       </div>
@@ -135,7 +135,7 @@ Find Waste Collection | WasteTracker
 
         userMarker = L.marker([lat, lon])
           .addTo(map)
-          .bindPopup("📍 You are here")
+          .bindPopup("You are here")
           .openPopup();
       },
       function(error) {

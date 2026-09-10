@@ -22,6 +22,10 @@ def Home(request):
     return render(request,"home.html",{"info": info,"reports": reports})
 
 
+def about_us(request):
+    return render(request, "about_us.html")
+
+
 
 
 

@@ -13,7 +13,7 @@ import random
 from .models import OtpModel
 
 from django.conf import settings
-from .email_utils import send_welcome_email, send_otp_email, send_municipality_applied_email
+from .email_utils import send_welcome_email, send_otp_email, send_municipality_applied_email, send_officer_registration_email
 
 # Create your views here.
 
@@ -71,9 +71,9 @@ def Register(request):
         full_name = request.POST.get('full_name')
         email = request.POST.get('email')
         phone = request.POST.get('phone')
-        role = request.POST.get('role')
         password = request.POST.get('password') 
         confirm_password = request.POST.get('confirm_password')
+        role = 'public'
         
         if not full_name or not email or not phone or not password or not confirm_password:
             messages.error(request,"All Fields are required.")
@@ -124,6 +124,89 @@ def officer_portal(request):
 
 
 def officer_login(request):
+
+    if request.user.is_authenticated:
+        messages.info(request, "You are already logged in.")
+
+        if request.user.role == "municipality":
+            return redirect("municipality_dashboard")
+
+        return redirect("home")
+
+    if request.method == "POST":
+
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        if not email or not password:
+            messages.error(request, "All fields are required.")
+            return redirect("officer_login")
+
+        user_obj = User.objects.filter(email=email).first()
+
+        if user_obj is None:
+            messages.error(request, "Invalid email or password.")
+            return redirect("officer_login")
+
+        user = authenticate(
+            request,
+            username=user_obj.username,
+            password=password
+        )
+
+        if user is not None:
+
+            # Only Municipality Officers are allowed
+            if user.role != "municipality":
+                print("User role:", user.role)  # Debugging line
+                messages.error(
+                    request,
+                    "This account is not registered as a Municipality Officer."
+                )
+                return redirect("officer_login")
+
+            municipality = Municipality.objects.filter(user=user).first()
+
+            if municipality is None:
+                print("Municipality profile not found for user:", user)  # Debugging line
+                messages.error(
+                    request,
+                    "Municipality profile not found."
+                )
+                return redirect("officer_login")
+
+            if municipality.status == "pending":
+                print("Municipality registration is pending for user:", user)  # Debugging line
+                messages.warning(
+                    request,
+                    "Your registration is pending administrator approval."
+                )
+                return redirect("officer_login")
+
+            if municipality.status == "rejected":
+                print("Municipality registration is rejected for user:", user)  # Debugging line
+                messages.error(
+                    request,
+                    "Your registration has been rejected."
+                )
+                return redirect("officer_login")
+
+            login(request, user)
+
+            messages.success(
+                request,
+                "Logged in successfully as Municipality Officer."
+            )
+
+            next_url = request.GET.get("next")
+            if next_url:
+                return redirect(next_url)
+
+            return redirect("municipality_dashboard")
+
+        messages.error(request, "Invalid email or password.")
+        return redirect("officer_login")
+
     return render(request, "officer_login.html")
 
 
@@ -160,6 +243,11 @@ def officer_register(request):
             municipality.user = user
             municipality.status = "pending"
             municipality.save()
+            
+            try:
+                send_officer_registration_email(user)
+            except Exception as e:
+                print(e)
 
             messages.success(
                 request,
@@ -333,45 +421,100 @@ def ProfileView(request):
     in_progress = reports.filter(status='in_progress').count()
     resolved = reports.filter(status='resolved').count()
     rejected = reports.filter(status='rejected').count()
-    
+
     total_reports = reports.count()
+
+    if request.user.role == 'municipality':
+        base_template = 'municipality/base_municipality.html'
+    elif request.user.role == 'worker':
+        base_template = 'worker/base_worker.html'
+    else:
+        base_template = 'base.html'
 
     context = {
         'reports': reports,
         'pending': pending,
-        'in_progress': in_progress, 
+        'in_progress': in_progress,
         'resolved': resolved,
         'rejected': rejected,
         'total_reports': total_reports,
+        'base_template': base_template,
     }
 
-    return render(request,"profile.html", context)
+    return render(request, "profile.html", context)
 
 @login_required(login_url="login")
 def EditProfileView(request):
-    
+
     user = request.user
-    
+
+    if request.user.role == 'municipality':
+        base_template = 'municipality/base_municipality.html'
+    elif request.user.role == 'worker':
+        base_template = 'worker/base_worker.html'
+    else:
+        base_template = 'base.html'
+
     if request.method == "POST":
         full_name = request.POST.get("full_name")
         phone = request.POST.get("phone")
         address = request.POST.get("address")
-        
+
         if User.objects.filter(phone=phone).exclude(id=user.id).exists():
-            messages.error(request,"Phone number already exists.")
+            messages.error(request, "Phone number already exists.")
             return redirect('edit_profile')
-        
+
         user.full_name = full_name
         user.phone = phone
         user.address = address
-        
+
         if request.FILES.get("profile_picture"):
             user.profile_picture = request.FILES["profile_picture"]
-        
+
         user.save()
-        
-        messages.success(request,"Profile Updated Successfully.")
+
+        messages.success(request, "Profile Updated Successfully.")
         return redirect("profile")
-        
-        
-    return render(request,"edit_profile.html")       
+
+    return render(request, "edit_profile.html", {"base_template": base_template})
+
+
+def worker_login(request):
+
+    if request.user.is_authenticated:
+        if request.user.role == "worker":
+            return redirect("worker_dashboard")
+
+    if request.method == "POST":
+
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        try:
+            user_obj = User.objects.get(email=email)
+
+        except User.DoesNotExist:
+            messages.error(request, "Invalid email or password.")
+            return redirect("worker_login")
+
+        user = authenticate(
+            request,
+            username=user_obj.username,
+            password=password,
+        )
+
+        if user is None:
+            messages.error(request, "Invalid email or password.")
+            return redirect("worker_login")
+
+        if user.role != "worker":
+            messages.error(request, "This account is not a worker account.")
+            return redirect("worker_login")
+
+        login(request, user)
+
+        messages.success(request, f"Welcome {user.full_name}!")
+
+        return redirect("worker_dashboard")
+
+    return render(request, "worker/worker_login.html")     

@@ -1,4 +1,5 @@
 from django.db import models
+from UserAuth.models import WorkerProfile
 
 # Create your models here.
 from django.conf import settings
@@ -35,6 +36,7 @@ class WasteReport(models.Model):
     waste_type = models.CharField(max_length=50, choices=WASTE_TYPE_CHOICES)
     description = models.TextField()
     image = models.ImageField(upload_to='waste_images/', blank=True, null=True)
+    proof_image = models.ImageField(upload_to='proof_images/', blank=True, null=True)
     urgency_level = models.CharField(max_length=20,choices = URGENCY_LEVEL_CHOICES, default='low')
     landmark = models.CharField(max_length=200, blank=True, null=True)
     
@@ -56,16 +58,34 @@ class WasteReport(models.Model):
         related_name="assigned_reports"
     )
     
+    assigned_worker = models.ForeignKey(
+        WorkerProfile,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="assigned_reports",
+    )
+    
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title 
-    
-    
-    
-    
+
+    @property
+    def pin_code(self):
+        if not self.full_address:
+            return "Not provided"
+
+        parts = [part.strip() for part in self.full_address.split(',') if part.strip()]
+        for part in reversed(parts):
+            digits = ''.join(ch for ch in part if ch.isdigit())
+            if 4 <= len(digits) <= 10:
+                return part
+        return "Not provided"
+
+
 class Notification(models.Model):
     
     user = models.ForeignKey(

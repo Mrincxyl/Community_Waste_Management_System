@@ -1,0 +1,87 @@
+<nav class="sticky top-0 z-30 bg-white border-b border-slate-200 shadow-sm">
+
+    <div class="flex items-center justify-between px-6 lg:px-8 h-16">
+
+        <!-- Left -->
+        <div>
+            <h1 class="text-lg font-semibold text-slate-900 tracking-tight">
+                Municipality Dashboard
+            </h1>
+            <p class="text-xs text-slate-500 mt-0.5 hidden sm:block">
+                Manage waste reports, workers and municipality activities.
+            </p>
+        </div>
+
+        <!-- Right -->
+        <div class="flex items-center gap-4">
+
+            <!-- Notification -->
+            <div class="relative">
+                <button id="municipalityNotificationBtn"
+                        class="relative w-10 h-10 rounded-lg bg-slate-50 hover:bg-slate-100 transition flex items-center justify-center border border-slate-200">
+                    <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                    </svg>
+                    {% if unread_notification_count > 0 %}
+                        <span class="absolute -top-1 -right-1 min-w-[18px] h-[18px] rounded-full bg-rose-500 text-white text-[10px] flex items-center justify-center font-medium px-1">
+                            {% if unread_notification_count > 99 %}99+{% else %}{{ unread_notification_count }}{% endif %}
+                        </span>
+                    {% endif %}
+                </button>
+                {% include "notification_dropdown.html" %}
+            </div>
+
+            <!-- Profile -->
+            <div class="flex items-center gap-3 pl-2 border-l border-slate-200">
+                <div class="text-right hidden sm:block">
+                    <p class="font-medium text-slate-800 text-sm leading-tight">
+                        {{ request.user.full_name }}
+                    </p>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        Municipality Officer
+                    </p>
+                </div>
+
+                {% if request.user.profile_picture %}
+                    <img src="{{ request.user.profile_picture.url }}"
+                         alt="{{ request.user.full_name }}"
+                         class="w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-sm border border-slate-200">
+                {% else %}
+                    <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-semibold text-sm ring-2 ring-white shadow-sm border border-slate-200">
+                        {{ request.user.full_name|first|upper }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Logout -->
+            <a href="{% url 'logout' %}"
+               class="ml-1 px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-sm font-medium transition">
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<script>
+    const municipalityNotificationBtn = document.getElementById('municipalityNotificationBtn');
+    const municipalityNotificationDropdown = document.getElementById('notificationDropdown');
+
+    if (municipalityNotificationBtn && municipalityNotificationDropdown) {
+        municipalityNotificationBtn.addEventListener('click', function (event) {
+            event.stopPropagation();
+            municipalityNotificationDropdown.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', function () {
+            municipalityNotificationDropdown.classList.add('hidden');
+        });
+
+        municipalityNotificationDropdown.addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+    }
+</script>

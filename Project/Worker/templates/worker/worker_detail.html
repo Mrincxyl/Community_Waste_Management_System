@@ -1,0 +1,190 @@
+{% extends "municipality/base_municipality.html" %}
+
+{% block content %}
+
+<div class="max-w-5xl mx-auto px-4 py-10">
+
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+
+        <!-- Header -->
+        <div class="relative bg-slate-900 px-8 py-9">
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-800 to-teal-900 opacity-95"></div>
+            
+            <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h1 class="text-3xl font-semibold tracking-tight text-white">
+                        Worker Details
+                    </h1>
+                    <p class="mt-1.5 text-slate-300 text-base">
+                        View worker information and current status.
+                    </p>
+                </div>
+
+                <a href="{% url 'worker_list' %}"
+                   class="inline-flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    Back to Workers
+                </a>
+            </div>
+        </div>
+
+        <div class="p-8 md:p-10">
+
+            <div class="grid lg:grid-cols-12 gap-10">
+
+                <!-- Left – Profile -->
+                <div class="lg:col-span-4 flex flex-col items-center text-center">
+
+                    <div class="relative">
+                        {% if worker.user.profile_picture %}
+                            <img src="{{ worker.user.profile_picture.url }}"
+                                 class="w-44 h-44 rounded-full object-cover ring-4 ring-white shadow-lg"
+                                 alt="{{ worker.user.full_name }}">
+                        {% else %}
+                            <div class="w-44 h-44 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center text-5xl font-semibold ring-4 ring-white shadow-lg">
+                                {{ worker.user.full_name|first|upper }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <h2 class="mt-5 text-xl font-semibold text-slate-900">
+                        {{ worker.user.full_name }}
+                    </h2>
+
+                    <p class="mt-1 text-sm font-medium text-slate-500">
+                        {{ worker.employee_id }}
+                    </p>
+
+                    <!-- Status Badge -->
+                    <div class="mt-4">
+                        {% if worker.status == "available" %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-teal-50 text-teal-700 ring-1 ring-inset ring-teal-600/20">
+                                <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+                                Available
+                            </span>
+                        {% elif worker.status == "busy" %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-amber-50 text-amber-700 ring-1 ring-inset ring-amber-600/20">
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                Busy
+                            </span>
+                        {% else %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20">
+                                <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                                Offline
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Active Status -->
+                    <div class="mt-3">
+                        {% if worker.is_active %}
+                            <span class="text-xs font-medium text-teal-600">Active Account</span>
+                        {% else %}
+                            <span class="text-xs font-medium text-rose-600">Inactive Account</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Right – Information -->
+                <div class="lg:col-span-8">
+
+                    <div class="grid sm:grid-cols-2 gap-x-8 gap-y-6">
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Email
+                            </label>
+                            <p class="mt-1.5 text-base text-slate-800">
+                                {{ worker.user.email }}
+                            </p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Phone
+                            </label>
+                            <p class="mt-1.5 text-base text-slate-800">
+                                {{ worker.user.phone|default:"—" }}
+                            </p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Ward
+                            </label>
+                            <p class="mt-1.5 text-base text-slate-800">
+                                {{ worker.ward }}
+                            </p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Municipality
+                            </label>
+                            <p class="mt-1.5 text-base text-slate-800">
+                                {{ worker.municipality.organization_name }}
+                            </p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Joined Date
+                            </label>
+                            <p class="mt-1.5 text-base text-slate-800">
+                                {{ worker.joined_at|date:"d M Y" }}
+                            </p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                Account Status
+                            </label>
+                            <p class="mt-1.5 text-base text-slate-800">
+                                {% if worker.is_active %}
+                                    Active
+                                {% else %}
+                                    Inactive
+                                {% endif %}
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- Address -->
+                    <div class="mt-8">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+                            Address
+                        </label>
+                        <div class="mt-2 p-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 text-sm leading-relaxed">
+                            {{ worker.user.address|default:"No address provided." }}
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex flex-wrap items-center gap-3 mt-10 pt-6 border-t border-slate-100">
+                        <a href="{% url 'edit_worker' worker.id %}"
+                           class="inline-flex items-center justify-center bg-teal-700 hover:bg-teal-800 text-white px-6 py-2.5 rounded-lg text-sm font-medium shadow-sm transition focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            Edit Worker
+                        </a>
+
+                        <a href="{% url 'deactivate_worker' worker.id %}"
+                           onclick="return confirm('Are you sure you want to deactivate this worker?')"
+                           class="inline-flex items-center justify-center bg-white border border-rose-300 text-rose-700 hover:bg-rose-50 px-6 py-2.5 rounded-lg text-sm font-medium transition">
+                            Deactivate
+                        </a>
+
+                        <a href="{% url 'worker_list' %}"
+                           class="inline-flex items-center justify-center bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-2.5 rounded-lg text-sm font-medium transition">
+                            Back to List
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

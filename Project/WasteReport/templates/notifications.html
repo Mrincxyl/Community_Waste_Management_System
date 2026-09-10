@@ -1,192 +1,136 @@
-{% extends "base.html" %}
+{% extends base_template|default:"base.html" %}
 
 {% block content %}
 
-<div class="max-w-5xl mx-auto px-4 py-10">
+<div class="max-w-4xl mx-auto px-4 py-10">
 
     <!-- Header -->
-    <div class="flex items-center justify-between mb-8">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
 
         <div>
-
-            <h1 class="text-3xl font-bold text-gray-800">
+            <h1 class="text-2xl font-semibold text-slate-900 tracking-tight">
                 Notifications
             </h1>
-
-            <p class="text-gray-500 mt-2">
+            <p class="mt-1 text-sm text-slate-500">
                 Stay updated with the latest activity on your waste reports.
             </p>
-
         </div>
 
         {% if notifications %}
-
-        <a href="{% url 'clear_notifications' %}"
-            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
-            Clear All
-        </a>
-
-        <a href="{% url 'mark_all_notifications_read' %}"
-           class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow transition">
-
-            Mark All Read
-
-        </a>
-
+        <div class="flex items-center gap-3">
+            <a href="{% url 'mark_all_notifications_read' %}"
+               class="inline-flex items-center px-4 py-2 rounded-lg bg-teal-700 hover:bg-teal-800 text-white text-sm font-medium transition">
+                Mark All Read
+            </a>
+            <a href="{% url 'clear_notifications' %}"
+               class="inline-flex items-center px-4 py-2 rounded-lg border border-rose-300 text-rose-700 hover:bg-rose-50 text-sm font-medium transition">
+                Clear All
+            </a>
+        </div>
         {% endif %}
 
     </div>
 
-
-
     {% if notifications %}
 
-        <div class="space-y-5">
+        <div class="space-y-3">
 
             {% for notification in notifications %}
 
-            <div class="rounded-2xl shadow-md border overflow-hidden transition
-
+            <div class="rounded-xl border overflow-hidden transition
                 {% if notification.is_read %}
-                    bg-white border-gray-200
+                    bg-white border-slate-200
                 {% else %}
-                    bg-blue-50 border-blue-300
+                    bg-teal-50/50 border-teal-200
                 {% endif %}">
 
-                <div class="p-6 flex justify-between">
+                <div class="p-5 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
 
                     <div class="flex gap-4">
 
                         <!-- Icon -->
-
-                        <div>
-
+                        <div class="flex-shrink-0">
                             {% if notification.is_read %}
-
-                            <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-
-                                ✓
-
-                            </div>
-
+                                <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                </div>
                             {% else %}
-
-                            <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center">
-
-                                🔔
-
-                            </div>
-
+                                <div class="w-10 h-10 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                    </svg>
+                                </div>
                             {% endif %}
-
                         </div>
 
-
-
-                        <div>
-
-                            <h3 class="text-lg font-semibold text-gray-800">
-
+                        <div class="min-w-0">
+                            <h3 class="text-base font-semibold text-slate-900">
                                 {{ notification.title }}
-
                             </h3>
-
-                            <p class="text-gray-600 mt-2">
-
+                            <p class="mt-1 text-sm text-slate-600 leading-relaxed">
                                 {{ notification.message }}
-
                             </p>
 
-                            <div class="mt-3 flex items-center gap-4">
-
-                                <span class="text-sm text-gray-400">
-
-                                    {{ notification.created_at|timesince }} ago
-
-                                </span>
+                            <div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-500">
+                                <span>{{ notification.created_at|timesince }} ago</span>
 
                                 {% if notification.report %}
-
-                                <span class="text-sm bg-gray-100 px-3 py-1 rounded-full">
-
-                                    Report #{{ notification.report.id }}
-
-                                </span>
-
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">
+                                        Report #{{ notification.report.id }}
+                                    </span>
                                 {% endif %}
-
                             </div>
-
                         </div>
-
                     </div>
 
-
-
                     <!-- Right Side -->
-
-                    <div class="text-right">
-
+                    <div class="flex-shrink-0 flex flex-col items-end gap-2 sm:ml-4">
                         {% if not notification.is_read %}
-
-                        <span class="inline-block bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-medium mb-4">
-
-                            New
-
-                        </span>
-
-                        <br>
-
-                        <a href="{% url 'open_notification' notification.id %}"
-                        class="text-indigo-600 hover:text-indigo-800 font-medium">
-                            Open Report
-                        </a>
-
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-50 text-rose-700 ring-1 ring-inset ring-rose-600/20">
+                                New
+                            </span>
+                            <a href="{% url 'open_notification' notification.id %}"
+                               class="text-sm font-medium text-teal-700 hover:text-teal-800 transition">
+                                Open Report →
+                            </a>
                         {% else %}
-                        <a href="{% url 'delete_notification' notification.id %}"
-                            class="text-red-600 hover:text-red-800 text-sm">
-                            Delete
-                        </a>
-
-                        <span class="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-
-                            Read
-
-                        </span>
-
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
+                                Read
+                            </span>
+                            <a href="{% url 'delete_notification' notification.id %}"
+                               class="text-sm font-medium text-rose-600 hover:text-rose-700 transition">
+                                Delete
+                            </a>
                         {% endif %}
-
                     </div>
 
                 </div>
-
             </div>
 
             {% endfor %}
 
         </div>
 
-
-
     {% else %}
 
-    <!-- Empty State -->
-
-    <div class="text-center py-16">
-
-        <div class="text-6xl mb-5">
-        🔔
+        <!-- Empty State -->
+        <div class="text-center py-20">
+            <div class="mx-auto w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+                <svg class="w-7 h-7 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                </svg>
+            </div>
+            <h2 class="text-lg font-semibold text-slate-900">
+                No Notifications
+            </h2>
+            <p class="mt-2 text-sm text-slate-500 max-w-sm mx-auto">
+                You're all caught up! New updates about your reports will appear here.
+            </p>
         </div>
-
-        <h2 class="text-2xl font-bold text-gray-700">
-            No Notifications
-        </h2>
-
-        <p class="text-gray-500 mt-3">
-            You're all caught up! New updates about your reports will appear here.
-        </p>
-
-    </div>
 
     {% endif %}
 

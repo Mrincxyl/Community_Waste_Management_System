@@ -44,8 +44,9 @@ class wasteReportUpdateForm(forms.ModelForm):
     class Meta:
         model = WasteReport
         fields = [
-            'status'
-        ]       
+            'status',
+            'proof_image',
+        ]
                  
         
         

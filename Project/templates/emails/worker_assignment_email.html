@@ -1,0 +1,48 @@
+{% extends "emails/base_email.html" %}
+
+{% block title %}
+New Waste Task Assigned
+{% endblock %}
+
+{% block content %}
+
+<h2 style="margin-top:0;color:#1e293b;">
+    Hello {{ worker.user.full_name }},
+</h2>
+
+<p style="font-size:16px;color:#555;">
+    A new waste management task has been assigned to you.
+</p>
+
+<table>
+    <tr>
+        <td class="label">Report Title</td>
+        <td>{{ report.title }}</td>
+    </tr>
+    <tr>
+        <td class="label">Waste Type</td>
+        <td>{{ report.get_waste_type_display }}</td>
+    </tr>
+    <tr>
+        <td class="label">Location</td>
+        <td>{{ report.full_address|default:report.landmark|default:"Not provided" }}</td>
+    </tr>
+    <tr>
+        <td class="label">Priority</td>
+        <td>{{ report.get_urgency_level_display }}</td>
+    </tr>
+    <tr>
+        <td class="label">Assigned On</td>
+        <td>{{ report.updated_at|date:"d M Y, h:i A" }}</td>
+    </tr>
+</table>
+
+<p style="margin-top:30px;color:#555;line-height:1.8;">
+    Please check your worker dashboard and start the assigned job as soon as possible.
+</p>
+
+<p style="margin-top:30px;">
+    <a href="http://127.0.0.1:8000/worker/dashboard/" class="button">Open Worker Dashboard</a>
+</p>
+
+{% endblock %}

@@ -10,10 +10,9 @@ class customUser(AbstractUser):
     ROLE_CHOICES = (
         ('admin', 'Admin'),
         ('public', 'Public'),
+        ('user', 'User'),
         ('municipality', 'Municipality'),
         ('worker', 'Worker'),
-        
-        
     )
     full_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -23,8 +22,12 @@ class customUser(AbstractUser):
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     
+    
+    
     def __str__(self):
         return self.email
+    
+    
     
     
 
@@ -73,7 +76,47 @@ class Municipality(models.Model):
     def __str__(self):
         return f"{self.user.email} - {self.status}"
     
+ 
+class WorkerProfile(models.Model):
+    STATUS_CHOICES = (
+        ("available", "Available"),
+        ("busy", "Busy"),
+        ("offline", "Offline"),
+    )
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        limit_choices_to={"role": "worker"},
+        related_name="worker_profile",
+    )
+
+    municipality = models.ForeignKey(
+        Municipality,
+        on_delete=models.CASCADE,
+        related_name="workers",
+    )
+
+    employee_id = models.CharField(max_length=20, unique=True)
+
+    ward = models.CharField(max_length=100)
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="available",
+    )
     
+    is_active = models.BooleanField(default=True)
+
+    joined_at = models.DateTimeField(auto_now_add=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.full_name} ({self.employee_id})"
+    
+        
 
 class OtpModel(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

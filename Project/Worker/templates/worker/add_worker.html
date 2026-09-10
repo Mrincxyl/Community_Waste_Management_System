@@ -1,0 +1,151 @@
+{% extends "municipality/base_municipality.html" %}
+
+{% block content %}
+
+<div class="max-w-5xl mx-auto px-4 py-10">
+
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+
+        <!-- Header -->
+        <div class="relative bg-slate-900 px-8 py-10">
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-800 to-teal-900 opacity-95"></div>
+            
+            <div class="relative">
+                <h1 class="text-3xl font-semibold tracking-tight text-white">
+                    Add New Worker
+                </h1>
+                <p class="mt-2 text-slate-300 text-base">
+                    Register a new worker for your municipality.
+                </p>
+            </div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" class="p-8 md:p-10">
+            {% csrf_token %}
+
+            <div class="grid lg:grid-cols-12 gap-10">
+
+                <!-- LEFT – Profile Photo -->
+                <div class="lg:col-span-4 flex flex-col items-center">
+
+                    <div class="relative">
+                        <div id="defaultAvatar"
+                             class="w-44 h-44 rounded-full bg-slate-100 border-4 border-white shadow-md flex items-center justify-center text-slate-400 text-5xl font-medium">
+                            W
+                        </div>
+
+                        <img id="preview"
+                             class="hidden w-44 h-44 rounded-full object-cover border-4 border-white shadow-md">
+                    </div>
+
+                    <label class="mt-6 cursor-pointer">
+                        <div class="inline-flex items-center gap-2 bg-white border border-slate-300 hover:border-slate-400 text-slate-700 px-5 py-2.5 rounded-lg text-sm font-medium shadow-sm transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            Choose Photo
+                        </div>
+                        {{ form.profile_picture }}
+                    </label>
+
+                    <p class="mt-3 text-xs text-slate-400 text-center max-w-[180px]">
+                        Recommended: Square image, max 2 MB
+                    </p>
+                </div>
+
+                <!-- RIGHT – Form Fields -->
+                <div class="lg:col-span-8">
+
+                    <div class="grid md:grid-cols-2 gap-x-6 gap-y-5">
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Full Name
+                            </label>
+                            {{ form.full_name }}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Email
+                            </label>
+                            {{ form.email }}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Phone
+                            </label>
+                            {{ form.phone }}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Ward
+                            </label>
+                            {{ form.ward }}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Password
+                            </label>
+                            {{ form.password }}
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                                Confirm Password
+                            </label>
+                            {{ form.confirm_password }}
+                        </div>
+
+                    </div>
+
+                    <div class="mt-5">
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                            Address
+                        </label>
+                        {{ form.address }}
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex flex-wrap items-center gap-3 mt-10 pt-6 border-t border-slate-100">
+                        <button type="submit"
+                                class="inline-flex items-center justify-center bg-teal-700 hover:bg-teal-800 text-white px-7 py-2.5 rounded-lg text-sm font-medium shadow-sm transition focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            Add Worker
+                        </button>
+
+                        <a href="{% url 'worker_list' %}"
+                           class="inline-flex items-center justify-center bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-7 py-2.5 rounded-lg text-sm font-medium transition">
+                            Cancel
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+const input = document.getElementById("id_profile_picture");
+const preview = document.getElementById("preview");
+const avatar = document.getElementById("defaultAvatar");
+
+if (input) {
+    input.onchange = function () {
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.classList.remove("hidden");
+                avatar.style.display = "none";
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
+    };
+}
+</script>
+
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "municipality/base_municipality.html" %}
 
 {% load static %}
 
@@ -386,11 +386,23 @@
                 <!-- PROOF IMAGE UPLOAD -->
                 <!-- ============================= -->
 
-
-
-                      
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+                        Proof Image
                     </label>
 
+                    <input
+                        type="file"
+                        name="proof_image"
+                        accept="image/*"
+                        class="block w-full text-sm text-slate-600 file:mr-4 file:rounded-xl file:border-0 file:bg-emerald-100 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-emerald-700 hover:file:bg-emerald-200"
+                    >
+
+                    {% if report.proof_image %}
+                        <p class="mt-2 text-xs text-slate-500">
+                            Existing proof image: <a href="{{ report.proof_image.url }}" target="_blank" class="text-emerald-600 hover:underline">Open</a>
+                        </p>
+                    {% endif %}
                 </div>
 
 
@@ -420,6 +432,16 @@
                         Cancel
 
                     </a>
+
+                     {% if report.status != "resolved" and report.status != "rejected" %}
+                    <a
+                        href="{% url 'municipality_assign_worker' report.id %}"
+                        class="w-full sm:flex-1 text-center rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white hover:bg-indigo-700 shadow-sm hover:shadow-md transition">
+
+                        Assign Worker
+
+                    </a>
+                    {% endif %}
 
 
                     <button

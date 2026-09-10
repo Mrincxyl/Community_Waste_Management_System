@@ -25,8 +25,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("",views.Home,name="home"),
+    path("about-us/", views.about_us, name="about_us"),
     path("auth/",include('UserAuth.urls')),
-    path("waste_report/",include('WasteReport.urls'))
+    path("waste_report/",include('WasteReport.urls')),
+    path("worker/",include('Worker.urls')),
 ]
 
 if settings.DEBUG:
