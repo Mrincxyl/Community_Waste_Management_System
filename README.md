@@ -1,5 +1,6 @@
 # 🌍 Community Waste Management System
 
+Live: https://community-waste-management-system.onrender.com
 A full-stack Django web application that enables citizens to report waste with live location, allowing municipality officers to manage reports efficiently and assign them to workers for resolution.
 
 ---
