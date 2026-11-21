@@ -68,22 +68,19 @@ Citizens can submit waste reports with images and GPS locations. Municipality of
 ## 📸 Application Screenshots
 
 ### 🏠 Home Page
-![Home Page](screenshots/home.png)
+![Home Page](Project/screenshots/home.jpeg)
 
-
-### 👤 Public User Dashboard
-![User Dashboard](screenshots/user_dashboard.png)
-
-### 📝 Waste Reporting
-![Waste Reporting](screenshots/report_waste.png)
+### 👤 User Dashboard
+![User Dashboard](Project/screenshots/user_dashboard.jpeg)
 
 ### 🏛 Municipality Dashboard
-![Municipality Dashboard](screenshots/municipality_dashboard.png)
+![Municipality Dashboard](Project/screenshots/municipality_dashboard.jpeg)
+
+### 📝 Waste Reporting
+![Waste Reporting](Project/screenshots/report_waste.jpeg)
 
 ### 👷 Worker Dashboard
-![Worker Dashboard](screenshots/worker_dashboard.png)
-
-
+![Worker Dashboard](Project/screenshots/worker_dashboard.jpeg)
 
 ---
 
